@@ -72,8 +72,8 @@ public class GameController {
 	}
 	
 	public void updateView() {
-		view.textArea1.setText("");
-		view.textArea1.append(gameToString());
+		view.jTextArea1.setText("");
+		view.jTextArea1.append(gameToString());
 	}
 	
 	public String gameToString() {

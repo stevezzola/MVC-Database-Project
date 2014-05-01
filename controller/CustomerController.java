@@ -82,8 +82,8 @@ public class CustomerController {
 	}
 	
 	public void updateView() {
-		view.textArea1.setText("");
-		view.textArea1.append(customerToString());
+		view.jTextArea1.setText("");
+		view.jTextArea1.append(customerToString());
 	}
 	
 	public String customerToString() {
