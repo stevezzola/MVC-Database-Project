@@ -27,9 +27,9 @@ public class VideoGameDemo {
 			System.out.println("Connected!");
 			stmt = conn.createStatement();
 			
-			Customer customerModel = new Customer();
-			Game gameModel = new Game();
-			Purchase purchaseModel = new Purchase();
+			Customer.createTable();
+			Game.createTable();
+			Purchase.createTable();
 			VideoGameView view = new VideoGameView();
 		
 		

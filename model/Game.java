@@ -13,6 +13,9 @@ public class Game {
 	private String price;
 	
 	public Game () throws SQLException {
+	}
+
+	public static void createTable() {
 		String sql = "CREATE TABLE IF NOT EXISTS Game " +
 				"(title varChar(50), " +
 				"id char(10) not null, " +

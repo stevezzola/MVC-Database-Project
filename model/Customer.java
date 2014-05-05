@@ -13,6 +13,9 @@ public class Customer {
 	private String playLevel;
 	
 	public Customer () throws SQLException {
+	}
+
+	public static void createTable() {
 		String sql = "CREATE TABLE IF NOT EXISTS Customer " +
 				"(customerName varChar(50), " +
 				"id char(8) not null, " +

@@ -12,6 +12,9 @@ public class Purchase {
 	private double rating;
 	
 	public Purchase () throws SQLException {
+	}
+
+	public static void createTable() {
 		String sql = "CREATE TABLE IF NOT EXISTS Purchase " +
 				"(customerId char(8), " +
 				"gameId char(10) not null, " +
