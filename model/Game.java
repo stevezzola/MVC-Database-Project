@@ -2,6 +2,7 @@ package model;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
 
 import app.VideoGameDemo;
 
@@ -12,7 +13,15 @@ public class Game {
 	private String console;
 	private String price;
 	
-	public Game () throws SQLException {
+	public Game() {
+	}
+	
+	public Game(HashMap<String, String> params) {
+		title = params.get("title");
+		id = params.get("id");
+		company = params.get("company");
+		console = params.get("console");
+		price = params.get("price");
 	}
 
 	public static void createTable() {
@@ -24,7 +33,9 @@ public class Game {
 				"price varChar(8), " +
 				"primary key (id)" +
 				")";
-		VideoGameDemo.stmt.executeUpdate(sql);
+		try {
+			VideoGameDemo.stmt.executeUpdate(sql);
+		} catch (SQLException e) { System.out.println("Error: " + e.getMessage()); }
 	}
 	
 	public static Game searchById(String id) {
@@ -33,12 +44,13 @@ public class Game {
 			game = new Game();
 			String sql = "SELECT * FROM Game WHERE id = '" + id + "'";
 			ResultSet rs = VideoGameDemo.stmt.executeQuery(sql);
-			rs.next();
-			game.setTitle(rs.getString("title"));
-			game.setId(rs.getString("id"));
-			game.setCompany(rs.getString("company"));
-			game.setConsole(rs.getString("console"));
-			game.setPrice(rs.getString("price"));
+			if (rs.next()) {
+				game.setTitle(rs.getString("title"));
+				game.setId(rs.getString("id"));
+				game.setCompany(rs.getString("company"));
+				game.setConsole(rs.getString("console"));
+				game.setPrice(rs.getString("price"));
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

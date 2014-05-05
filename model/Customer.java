@@ -1,6 +1,8 @@
 package model;
 
-import java.sql.*;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.HashMap;
 
 import app.VideoGameDemo;
 
@@ -12,7 +14,16 @@ public class Customer {
 	private String birthDate;
 	private String playLevel;
 	
-	public Customer () throws SQLException {
+	public Customer() {
+	}
+	
+	public Customer (HashMap<String, String> params) {
+		customerName = params.get("customerName");
+		id = params.get("id");
+		gender = params.get("gender");
+		age = Integer.parseInt(params.get("age"));
+		birthDate = params.get("birthDate");
+		playLevel = params.get("playLevel");
 	}
 
 	public static void createTable() {
@@ -25,7 +36,9 @@ public class Customer {
 				"playLevel varChar(12), " +
 				"primary key (id)" +
 				")";
-		VideoGameDemo.stmt.executeUpdate(sql);
+		try {
+			VideoGameDemo.stmt.executeUpdate(sql);
+		} catch (SQLException e) { System.out.println("Error: " + e.getMessage()); }
 	}
 	
 	public static Customer searchById(String id) {
@@ -34,13 +47,14 @@ public class Customer {
 			customer = new Customer();
 			String sql = "SELECT * FROM Customer WHERE id = " + id;
 			ResultSet rs = VideoGameDemo.stmt.executeQuery(sql);
-			rs.next();
-			customer.setCustomerName(rs.getString("customerName"));
-			customer.setId(rs.getString("id"));
-			customer.setGender(rs.getString("gender"));
-			customer.setAge(rs.getInt("age"));
-			customer.setBirthDate(rs.getString("birthDate"));
-			customer.setPlayLevel(rs.getString("playLevel"));
+			if (rs.next()) {
+				customer.setCustomerName(rs.getString("customerName"));
+				customer.setId(rs.getString("id"));
+				customer.setGender(rs.getString("gender"));
+				customer.setAge(rs.getInt("age"));
+				customer.setBirthDate(rs.getString("birthDate"));
+				customer.setPlayLevel(rs.getString("playLevel"));
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

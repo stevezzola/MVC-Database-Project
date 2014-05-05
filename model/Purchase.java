@@ -11,7 +11,7 @@ public class Purchase {
 	private String purchaseDate;
 	private double rating;
 	
-	public Purchase () throws SQLException {
+	public Purchase () {
 	}
 
 	public static void createTable() {
@@ -24,7 +24,9 @@ public class Purchase {
 				"foreign key (customerId) references Customer (id)," +
 				"foreign key (gameId) references Game (id)" +
 				")";
-		VideoGameDemo.stmt.executeUpdate(sql);
+		try {
+			VideoGameDemo.stmt.executeUpdate(sql);
+		} catch (SQLException e) { System.out.println("Error: " + e.getMessage()); }
 	}
 
 	public String getCustomerId() {

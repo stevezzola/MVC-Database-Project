@@ -110,19 +110,13 @@ public class VideoGameView extends javax.swing.JFrame {
 		if (!input.equals("")) {
 			//Send input to Customer Controller
 				CustomerController controller;
-				try {
-					controller = new CustomerController(new Customer(), this);
-					controller.read(input);
-				} catch (SQLException e) {}
-				
+				controller = new CustomerController(new Customer(), this);
+				controller.read(input);
 		}
 		else {
 			input = jTextField2.getText();
-			//Send input to Game Controller
-			try {
-				GameController controller = new GameController(new Game(), this);
-				controller.read(input);
-			} catch (SQLException e) {}
+			GameController controller = new GameController(new Game(), this);
+			controller.read(input);
 		}
 	}
 }
