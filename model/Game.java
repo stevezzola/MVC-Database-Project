@@ -39,9 +39,8 @@ public class Game {
 	}
 	
 	public static Game searchById(String id) {
-		Game game = null;
+		HashMap<String, String> params = new HashMap<String, String>();
 		try {
-			HashMap<String, String> params = new HashMap<String, String>();
 			String sql = "SELECT * FROM Game WHERE id = '" + id + "'";
 			ResultSet rs = VideoGameDemo.stmt.executeQuery(sql);
 			if (rs.next()) {
@@ -50,10 +49,9 @@ public class Game {
 				params.put("company", rs.getString("company"));
 				params.put("console", rs.getString("console"));
 				params.put("price", rs.getString("price"));
-				game = new Game(params);
 			}
 		} catch (SQLException e) { e.printStackTrace(); }
-		return game;
+		return new Game(params);
 	}
 	
 	public String getTitle() {

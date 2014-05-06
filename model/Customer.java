@@ -42,9 +42,8 @@ public class Customer {
 	}
 	
 	public static Customer searchById(String id) {
-		Customer customer = null;
+		HashMap<String, String> params = new HashMap<String, String>();
 		try {
-			HashMap<String, String> params = new HashMap<String, String>();
 			String sql = "SELECT * FROM Customer WHERE id = " + id;
 			ResultSet rs = VideoGameDemo.stmt.executeQuery(sql);
 			if (rs.next()) {
@@ -54,10 +53,9 @@ public class Customer {
 				params.put("age", String.valueOf(rs.getInt("age")));
 				params.put("birthDate", rs.getString("birthDate"));
 				params.put("playLevel", rs.getString("playLevel"));
-				customer = new Customer(params);
 			}
 		} catch (Exception e) { e.printStackTrace(); }
-		return customer;
+		return new Customer(params);
 	}
 	
 	public String getCustomerName() {
