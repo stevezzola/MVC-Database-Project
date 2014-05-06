@@ -1,9 +1,7 @@
 package controller;
 
-import java.sql.SQLException;
-
-import view.VideoGameView;
 import model.Customer;
+import view.VideoGameView;
 
 public class CustomerController {
 	private Customer model;
@@ -30,8 +28,6 @@ public class CustomerController {
 	public void destroy() {
 		
 	}
-	
-	
 	
 	public String getCustomerName() {
 		return model.getCustomerName();

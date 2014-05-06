@@ -38,26 +38,25 @@ public class Customer {
 				")";
 		try {
 			VideoGameDemo.stmt.executeUpdate(sql);
-		} catch (SQLException e) { System.out.println("Error: " + e.getMessage()); }
+		} catch (SQLException e) { e.printStackTrace(); }
 	}
 	
 	public static Customer searchById(String id) {
 		Customer customer = null;
 		try {
-			customer = new Customer();
+			HashMap<String, String> params = new HashMap<String, String>();
 			String sql = "SELECT * FROM Customer WHERE id = " + id;
 			ResultSet rs = VideoGameDemo.stmt.executeQuery(sql);
 			if (rs.next()) {
-				customer.setCustomerName(rs.getString("customerName"));
-				customer.setId(rs.getString("id"));
-				customer.setGender(rs.getString("gender"));
-				customer.setAge(rs.getInt("age"));
-				customer.setBirthDate(rs.getString("birthDate"));
-				customer.setPlayLevel(rs.getString("playLevel"));
+				params.put("customerName", rs.getString("customerName"));
+				params.put("id", rs.getString("id"));
+				params.put("gender", rs.getString("gender"));
+				params.put("age", String.valueOf(rs.getInt("age")));
+				params.put("birthDate", rs.getString("birthDate"));
+				params.put("playLevel", rs.getString("playLevel"));
+				customer = new Customer(params);
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		} catch (Exception e) { e.printStackTrace(); }
 		return customer;
 	}
 	

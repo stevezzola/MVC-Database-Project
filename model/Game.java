@@ -35,25 +35,24 @@ public class Game {
 				")";
 		try {
 			VideoGameDemo.stmt.executeUpdate(sql);
-		} catch (SQLException e) { System.out.println("Error: " + e.getMessage()); }
+		} catch (SQLException e) { e.printStackTrace(); }
 	}
 	
 	public static Game searchById(String id) {
 		Game game = null;
 		try {
-			game = new Game();
+			HashMap<String, String> params = new HashMap<String, String>();
 			String sql = "SELECT * FROM Game WHERE id = '" + id + "'";
 			ResultSet rs = VideoGameDemo.stmt.executeQuery(sql);
 			if (rs.next()) {
-				game.setTitle(rs.getString("title"));
-				game.setId(rs.getString("id"));
-				game.setCompany(rs.getString("company"));
-				game.setConsole(rs.getString("console"));
-				game.setPrice(rs.getString("price"));
+				params.put("title", rs.getString("title"));
+				params.put("id", rs.getString("id"));
+				params.put("company", rs.getString("company"));
+				params.put("console", rs.getString("console"));
+				params.put("price", rs.getString("price"));
+				game = new Game(params);
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		} catch (SQLException e) { e.printStackTrace(); }
 		return game;
 	}
 	

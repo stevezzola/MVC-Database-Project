@@ -26,7 +26,7 @@ public class Purchase {
 				")";
 		try {
 			VideoGameDemo.stmt.executeUpdate(sql);
-		} catch (SQLException e) { System.out.println("Error: " + e.getMessage()); }
+		} catch (SQLException e) { e.printStackTrace(); }
 	}
 
 	public String getCustomerId() {
