@@ -2,7 +2,10 @@ package model;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 import app.VideoGameDemo;
 
@@ -34,6 +37,7 @@ public class Game {
 				"primary key (id)" +
 				")";
 		try {
+			System.out.println("Executing query: " + sql);
 			VideoGameDemo.stmt.executeUpdate(sql);
 		} catch (SQLException e) { e.printStackTrace(); }
 	}
@@ -42,6 +46,7 @@ public class Game {
 		HashMap<String, String> params = new HashMap<String, String>();
 		try {
 			String sql = "SELECT * FROM Game WHERE id = '" + id + "'";
+			System.out.println("Executing query: " + sql);
 			ResultSet rs = VideoGameDemo.stmt.executeQuery(sql);
 			if (rs.next()) {
 				params.put("title", rs.getString("title"));
@@ -52,6 +57,33 @@ public class Game {
 			}
 		} catch (SQLException e) { e.printStackTrace(); }
 		return new Game(params);
+	}
+	
+	public static ArrayList<Game> where(HashMap<String, String> args) {
+		ArrayList<Game> list = new ArrayList<Game>();
+		if (args.isEmpty()) return list;
+		String sql = "SELECT * FROM Game WHERE ";
+		Iterator<Map.Entry<String, String>> it = args.entrySet().iterator();
+		while (it.hasNext()) {
+			Map.Entry<String, String> pair = (Map.Entry<String, String>) it.next();
+			sql += ("Game." + pair.getKey() + " = " + pair.getValue() + " AND ");
+		}
+		sql = sql.substring(0, sql.lastIndexOf(" AND "));
+		try {
+			System.out.println("Executing query: " + sql);
+			ResultSet rs = VideoGameDemo.stmt.executeQuery(sql);
+			HashMap<String, String> params = new HashMap<String, String>();
+			while (rs.next()) {
+				params.put("GameName", rs.getString("GameName"));
+				params.put("id", rs.getString("id"));
+				params.put("gender", rs.getString("gender"));
+				params.put("age", String.valueOf(rs.getInt("age")));
+				params.put("birthDate", rs.getString("birthDate"));
+				params.put("playLevel", rs.getString("playLevel"));
+				list.add(new Game(params));
+			}
+		} catch (SQLException e) { e.printStackTrace(); }
+		return list;
 	}
 	
 	public String getTitle() {

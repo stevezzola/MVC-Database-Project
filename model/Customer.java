@@ -2,7 +2,10 @@ package model;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 import app.VideoGameDemo;
 
@@ -37,6 +40,7 @@ public class Customer {
 				"primary key (id)" +
 				")";
 		try {
+			System.out.println("Executing query: " + sql);
 			VideoGameDemo.stmt.executeUpdate(sql);
 		} catch (SQLException e) { e.printStackTrace(); }
 	}
@@ -45,6 +49,7 @@ public class Customer {
 		HashMap<String, String> params = new HashMap<String, String>();
 		try {
 			String sql = "SELECT * FROM Customer WHERE id = " + id;
+			System.out.println("Executing query: " + sql);
 			ResultSet rs = VideoGameDemo.stmt.executeQuery(sql);
 			if (rs.next()) {
 				params.put("customerName", rs.getString("customerName"));
@@ -56,6 +61,33 @@ public class Customer {
 			}
 		} catch (Exception e) { e.printStackTrace(); }
 		return new Customer(params);
+	}
+	
+	public static ArrayList<Customer> where(HashMap<String, String> args) {
+		ArrayList<Customer> list = new ArrayList<Customer>();
+		if (args.isEmpty()) return list;
+		String sql = "SELECT * FROM Customer WHERE ";
+		Iterator<Map.Entry<String, String>> it = args.entrySet().iterator();
+		while (it.hasNext()) {
+			Map.Entry<String, String> pair = (Map.Entry<String, String>) it.next();
+			sql += ("Customer." + pair.getKey() + " = " + pair.getValue() + " AND ");
+		}
+		sql = sql.substring(0, sql.lastIndexOf(" AND "));
+		try {
+			System.out.println("Executing query: " + sql);
+			ResultSet rs = VideoGameDemo.stmt.executeQuery(sql);
+			HashMap<String, String> params = new HashMap<String, String>();
+			while (rs.next()) {
+				params.put("customerName", rs.getString("customerName"));
+				params.put("id", rs.getString("id"));
+				params.put("gender", rs.getString("gender"));
+				params.put("age", String.valueOf(rs.getInt("age")));
+				params.put("birthDate", rs.getString("birthDate"));
+				params.put("playLevel", rs.getString("playLevel"));
+				list.add(new Customer(params));
+			}
+		} catch (SQLException e) { e.printStackTrace(); }
+		return list;
 	}
 	
 	public String getCustomerName() {

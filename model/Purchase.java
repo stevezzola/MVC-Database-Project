@@ -2,7 +2,10 @@ package model;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 import app.VideoGameDemo;
 
@@ -34,6 +37,7 @@ public class Purchase {
 				"foreign key (gameId) references Game (id)" +
 				")";
 		try {
+			System.out.println("Executing query: " + sql);
 			VideoGameDemo.stmt.executeUpdate(sql);
 		} catch (SQLException e) { e.printStackTrace(); }
 	}
@@ -52,6 +56,33 @@ public class Purchase {
 			}
 		} catch (SQLException e) { e.printStackTrace(); }
 		return new Purchase(params);
+	}
+	
+	public static ArrayList<Purchase> where(HashMap<String, String> args) {
+		ArrayList<Purchase> list = new ArrayList<Purchase>();
+		if (args.isEmpty()) return list;
+		String sql = "SELECT * FROM Purchase WHERE ";
+		Iterator<Map.Entry<String, String>> it = args.entrySet().iterator();
+		while (it.hasNext()) {
+			Map.Entry<String, String> pair = (Map.Entry<String, String>) it.next();
+			sql += ("Purchase." + pair.getKey() + " = " + pair.getValue() + " AND ");
+		}
+		sql = sql.substring(0, sql.lastIndexOf(" AND "));
+		try {
+			System.out.println("Executing query: " + sql);
+			ResultSet rs = VideoGameDemo.stmt.executeQuery(sql);
+			HashMap<String, String> params = new HashMap<String, String>();
+			while (rs.next()) {
+				params.put("PurchaseName", rs.getString("PurchaseName"));
+				params.put("id", rs.getString("id"));
+				params.put("gender", rs.getString("gender"));
+				params.put("age", String.valueOf(rs.getInt("age")));
+				params.put("birthDate", rs.getString("birthDate"));
+				params.put("playLevel", rs.getString("playLevel"));
+				list.add(new Purchase(params));
+			}
+		} catch (SQLException e) { e.printStackTrace(); }
+		return list;
 	}
 
 	public String getCustomerId() {
