@@ -23,7 +23,8 @@ public class Purchase {
 		customerId = params.get("customerId");
 		gameId = params.get("gameId");
 		purchaseDate = params.get("purchaseDate");
-		rating = Double.parseDouble("rating");
+		try { rating = Double.parseDouble("rating"); }
+		catch (NumberFormatException e) {}
 	}
 
 	public static void createTable() {

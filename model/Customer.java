@@ -24,7 +24,8 @@ public class Customer {
 		customerName = params.get("customerName");
 		id = params.get("id");
 		gender = params.get("gender");
-		age = Integer.parseInt(params.get("age"));
+		try { age = Integer.parseInt(params.get("age")); }
+		catch (NumberFormatException e) {}
 		birthDate = params.get("birthDate");
 		playLevel = params.get("playLevel");
 	}
