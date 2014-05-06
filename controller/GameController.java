@@ -18,7 +18,7 @@ public class GameController {
 	}
 	
 	public void read(String customerId) {
-		model = Game.searchById(customerId);
+		model = Game.find(customerId);
 		updateView();
 	}
 	

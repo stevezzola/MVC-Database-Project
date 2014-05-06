@@ -38,7 +38,7 @@ public class Game {
 		} catch (SQLException e) { e.printStackTrace(); }
 	}
 	
-	public static Game searchById(String id) {
+	public static Game find(String id) {
 		HashMap<String, String> params = new HashMap<String, String>();
 		try {
 			String sql = "SELECT * FROM Game WHERE id = '" + id + "'";

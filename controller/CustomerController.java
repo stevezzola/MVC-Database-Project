@@ -17,7 +17,7 @@ public class CustomerController {
 	}
 	
 	public void read(String customerId) {
-		model = Customer.searchById(customerId);
+		model = Customer.find(customerId);
 		updateView();
 	}
 	

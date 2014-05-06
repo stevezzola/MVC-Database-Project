@@ -41,7 +41,7 @@ public class Customer {
 		} catch (SQLException e) { e.printStackTrace(); }
 	}
 	
-	public static Customer searchById(String id) {
+	public static Customer find(String id) {
 		HashMap<String, String> params = new HashMap<String, String>();
 		try {
 			String sql = "SELECT * FROM Customer WHERE id = " + id;
