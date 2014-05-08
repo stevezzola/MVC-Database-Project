@@ -59,6 +59,14 @@ public class Game {
 		return new Game(params);
 	}
 	
+	public static ArrayList<Game> where(String[][] args) {
+		HashMap<String, String> hArgs = new HashMap<String, String>();
+		for (String[] row : args) {
+			hArgs.put(row[0], row[1]);
+		}
+		return where(hArgs);
+	}
+	
 	public static ArrayList<Game> where(HashMap<String, String> args) {
 		ArrayList<Game> list = new ArrayList<Game>();
 		if (args.isEmpty()) return list;

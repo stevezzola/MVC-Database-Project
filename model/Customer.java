@@ -64,6 +64,14 @@ public class Customer {
 		return new Customer(params);
 	}
 	
+	public static ArrayList<Customer> where(String[][] args) {
+		HashMap<String, String> hArgs = new HashMap<String, String>();
+		for (String[] row : args) {
+			hArgs.put(row[0], row[1]);
+		}
+		return where(hArgs);
+	}
+	
 	public static ArrayList<Customer> where(HashMap<String, String> args) {
 		ArrayList<Customer> list = new ArrayList<Customer>();
 		if (args.isEmpty()) return list;
