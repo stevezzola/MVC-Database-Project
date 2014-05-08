@@ -76,8 +76,8 @@ public class GameController {
 	}
 	
 	public String gameToString() {
-		return "\nTitle: " + getTitle() + "\nID: " + getId() 
-				+ "\nCompany: " + getCompany() + "\nConsole: " + getConsole()
-				+ "\nPrice: "+ getPrice();
+		return "\n Title: " + getTitle() + "\n ID: " + getId() 
+				+ "\n Company: " + getCompany() + "\n Console: " + getConsole()
+				+ "\n Price: "+ getPrice();
 	}
 }

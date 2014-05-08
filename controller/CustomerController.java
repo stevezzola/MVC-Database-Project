@@ -83,8 +83,8 @@ public class CustomerController {
 	}
 	
 	public String customerToString() {
-		return "\nName: " + getCustomerName() + "\nID: " + getId() 
-				+ "\nGender: " + getGender() + "\nAge: " + getAge()
-				+ "\nBirthday: "+ getBirthDate() + "\nPlay Level: " + getPlayLevel();
+		return "\n Name: " + getCustomerName() + "\n ID: " + getId() 
+				+ "\n Gender: " + getGender() + "\n Age: " + getAge()
+				+ "\n Birthday: "+ getBirthDate() + "\n Play Level: " + getPlayLevel();
 	}
 }
