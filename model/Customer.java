@@ -91,6 +91,47 @@ public class Customer {
 		return list;
 	}
 	
+	public boolean save() {
+		if (this.isNewRecord()) {
+			String sql = "INSERT INTO Customer (customerName, id, gender, age, birthDate, playLevel) " + 
+					"VALUES ('" + customerName + "', " + "'" + id + "', " + "'" + gender + "', " +
+					age + ", " + "'" + birthDate + "', " + "'" + playLevel + "')";
+			System.out.println("Executing query: " + sql);
+			try { VideoGameDemo.stmt.executeUpdate(sql); }
+			catch (SQLException e) { 
+				e.printStackTrace();
+				return false; 
+			}
+			return true;
+		} else {
+			String sql = "UPDATE Customer SET" +
+					" customerName = '" + customerName + "', " +
+					" id = '" + id + "', " +
+					" gender = '" + gender + "', " +
+					" age = " + age + ", " +
+					" birthDate = '" + birthDate + "', " +
+					" playLevel = '" + playLevel + "'" +
+					" WHERE id = '" + id + "'";
+			System.out.println("Executing query: " + sql);
+			try { VideoGameDemo.stmt.executeUpdate(sql); }
+			catch (SQLException e) {
+				e.printStackTrace();
+				return false;
+			}
+			return true;
+		}
+	}
+	
+	private boolean isNewRecord() {
+		String sql = "SELECT * FROM Customer WHERE id = " + id;
+		try {
+			System.out.println("Executing query: " + sql);
+			ResultSet rs = VideoGameDemo.stmt.executeQuery(sql);
+			return !rs.next();
+		} catch (SQLException e) { e.printStackTrace(); }
+		return false;
+	}
+	
 	public String getCustomerName() {
 		return customerName;
 	}
