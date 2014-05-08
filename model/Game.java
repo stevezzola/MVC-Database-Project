@@ -74,16 +74,55 @@ public class Game {
 			ResultSet rs = VideoGameDemo.stmt.executeQuery(sql);
 			HashMap<String, String> params = new HashMap<String, String>();
 			while (rs.next()) {
-				params.put("GameName", rs.getString("GameName"));
+				params.put("title", rs.getString("title"));
 				params.put("id", rs.getString("id"));
-				params.put("gender", rs.getString("gender"));
-				params.put("age", String.valueOf(rs.getInt("age")));
-				params.put("birthDate", rs.getString("birthDate"));
-				params.put("playLevel", rs.getString("playLevel"));
+				params.put("company", rs.getString("company"));
+				params.put("console", String.valueOf(rs.getInt("console")));
+				params.put("price", rs.getString("price"));
 				list.add(new Game(params));
 			}
 		} catch (SQLException e) { e.printStackTrace(); }
 		return list;
+	}
+	
+	public boolean save() {
+		if (this.isNewRecord()) {
+			String sql = "INSERT INTO Customer (title, id, company, console, price) " + 
+					"VALUES ('" + title + "', " + "'" + id + "', " + "'" + company + "', " +
+					console + ", " + "'" + price + "')";
+			System.out.println("Executing query: " + sql);
+			try { VideoGameDemo.stmt.executeUpdate(sql); }
+			catch (SQLException e) { 
+				e.printStackTrace();
+				return false; 
+			}
+			return true;
+		} else {
+			String sql = "UPDATE Customer SET" +
+					" title = '" + title + "', " +
+					" id = '" + id + "', " +
+					" company = '" + company + "', " +
+					" console = " + console + ", " +
+					" price = '" + price + "', " +
+					" WHERE id = '" + id + "'";
+			System.out.println("Executing query: " + sql);
+			try { VideoGameDemo.stmt.executeUpdate(sql); }
+			catch (SQLException e) {
+				e.printStackTrace();
+				return false;
+			}
+			return true;
+		}
+	}
+	
+	private boolean isNewRecord() {
+		String sql = "SELECT * FROM Game WHERE id = " + id;
+		try {
+			System.out.println("Executing query: " + sql);
+			ResultSet rs = VideoGameDemo.stmt.executeQuery(sql);
+			return !rs.next();
+		} catch (SQLException e) { e.printStackTrace(); }
+		return false;
 	}
 	
 	public String getTitle() {
