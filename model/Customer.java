@@ -122,6 +122,19 @@ public class Customer {
 		}
 	}
 	
+	public boolean delete() {
+		if (!isNewRecord()) {
+			String sql = "DELETE FROM Customer WHERE id = " + id;
+			System.out.println("Executing query: " + sql);
+			try { VideoGameDemo.stmt.executeUpdate(sql); }
+			catch (SQLException e) {
+				e.printStackTrace();
+				return false;
+			}
+		} else return false;
+		return true;
+	}
+	
 	private boolean isNewRecord() {
 		String sql = "SELECT * FROM Customer WHERE id = " + id;
 		try {
