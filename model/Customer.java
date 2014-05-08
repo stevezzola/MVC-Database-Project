@@ -49,7 +49,7 @@ public class Customer {
 	public static Customer find(String id) {
 		HashMap<String, String> params = new HashMap<String, String>();
 		try {
-			String sql = "SELECT * FROM Customer WHERE id = " + id;
+			String sql = "SELECT * FROM Customer WHERE id = '" + id + "'";
 			System.out.println("Executing query: " + sql);
 			ResultSet rs = VideoGameDemo.stmt.executeQuery(sql);
 			if (rs.next()) {
@@ -79,7 +79,7 @@ public class Customer {
 		Iterator<Map.Entry<String, String>> it = args.entrySet().iterator();
 		while (it.hasNext()) {
 			Map.Entry<String, String> pair = (Map.Entry<String, String>) it.next();
-			sql += ("Customer." + pair.getKey() + " = " + pair.getValue() + " AND ");
+			sql += ("Customer." + pair.getKey() + " = '" + pair.getValue() + "' AND ");
 		}
 		sql = sql.substring(0, sql.lastIndexOf(" AND "));
 		try {
@@ -132,7 +132,7 @@ public class Customer {
 	
 	public boolean delete() {
 		if (!isNewRecord()) {
-			String sql = "DELETE FROM Customer WHERE id = " + id;
+			String sql = "DELETE FROM Customer WHERE id = '" + id + "'";
 			System.out.println("Executing query: " + sql);
 			try { VideoGameDemo.stmt.executeUpdate(sql); }
 			catch (SQLException e) {
@@ -144,7 +144,7 @@ public class Customer {
 	}
 	
 	private boolean isNewRecord() {
-		String sql = "SELECT * FROM Customer WHERE id = " + id;
+		String sql = "SELECT * FROM Customer WHERE id = '" + id + "'";
 		try {
 			System.out.println("Executing query: " + sql);
 			ResultSet rs = VideoGameDemo.stmt.executeQuery(sql);

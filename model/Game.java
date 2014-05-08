@@ -74,7 +74,7 @@ public class Game {
 		Iterator<Map.Entry<String, String>> it = args.entrySet().iterator();
 		while (it.hasNext()) {
 			Map.Entry<String, String> pair = (Map.Entry<String, String>) it.next();
-			sql += ("Game." + pair.getKey() + " = " + pair.getValue() + " AND ");
+			sql += ("Game." + pair.getKey() + " = '" + pair.getValue() + "' AND ");
 		}
 		sql = sql.substring(0, sql.lastIndexOf(" AND "));
 		try {
@@ -125,7 +125,7 @@ public class Game {
 	
 	public boolean delete() {
 		if (!isNewRecord()) {
-			String sql = "DELETE FROM Game WHERE id = " + id;
+			String sql = "DELETE FROM Game WHERE id = '" + id + "'";
 			System.out.println("Executing query: " + sql);
 			try { VideoGameDemo.stmt.executeUpdate(sql); }
 			catch (SQLException e) {
@@ -137,7 +137,7 @@ public class Game {
 	}
 	
 	private boolean isNewRecord() {
-		String sql = "SELECT * FROM Game WHERE id = " + id;
+		String sql = "SELECT * FROM Game WHERE id = '" + id + "'";
 		try {
 			System.out.println("Executing query: " + sql);
 			ResultSet rs = VideoGameDemo.stmt.executeQuery(sql);
