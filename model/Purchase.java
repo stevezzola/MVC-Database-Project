@@ -54,6 +54,8 @@ public class Purchase {
 				params.put("gameId", rs.getString("gameId"));
 				params.put("purchaseDate", rs.getString("purchaseDate"));
 				params.put("rating", String.valueOf(rs.getDouble("rating")));
+			} else {
+				return null;
 			}
 		} catch (SQLException e) { e.printStackTrace(); }
 		return new Purchase(params);
@@ -74,7 +76,8 @@ public class Purchase {
 		Iterator<Map.Entry<String, String>> it = args.entrySet().iterator();
 		while (it.hasNext()) {
 			Map.Entry<String, String> pair = (Map.Entry<String, String>) it.next();
-			sql += ("Purchase." + pair.getKey() + " = " + pair.getValue() + " AND ");
+			if (pair.getValue() == null || pair.getValue().isEmpty()) continue;
+			sql += ("Purchase." + pair.getKey() + " = '" + pair.getValue() + "' AND ");
 		}
 		sql = sql.substring(0, sql.lastIndexOf(" AND "));
 		try {
@@ -137,14 +140,7 @@ public class Purchase {
 	}
 	
 	private boolean isNewRecord() {
-		String sql = "SELECT * FROM Game WHERE customerId = '"
-				+ customerId + "'" + " AND " + "gameId = '" + gameId + "'";
-		try {
-			System.out.println("Executing query: " + sql);
-			ResultSet rs = VideoGameDemo.stmt.executeQuery(sql);
-			return !rs.next();
-		} catch (SQLException e) { e.printStackTrace(); }
-		return false;
+		return find(customerId, gameId) == null;
 	}
 
 	public String getCustomerId() {

@@ -59,6 +59,8 @@ public class Customer {
 				params.put("age", String.valueOf(rs.getInt("age")));
 				params.put("birthDate", rs.getString("birthDate"));
 				params.put("playLevel", rs.getString("playLevel"));
+			} else {
+				return null;
 			}
 		} catch (Exception e) { e.printStackTrace(); }
 		return new Customer(params);
@@ -79,6 +81,7 @@ public class Customer {
 		Iterator<Map.Entry<String, String>> it = args.entrySet().iterator();
 		while (it.hasNext()) {
 			Map.Entry<String, String> pair = (Map.Entry<String, String>) it.next();
+			if (pair.getValue() == null || pair.getValue().isEmpty()) continue;
 			sql += ("Customer." + pair.getKey() + " = '" + pair.getValue() + "' AND ");
 		}
 		sql = sql.substring(0, sql.lastIndexOf(" AND "));
@@ -144,13 +147,7 @@ public class Customer {
 	}
 	
 	private boolean isNewRecord() {
-		String sql = "SELECT * FROM Customer WHERE id = '" + id + "'";
-		try {
-			System.out.println("Executing query: " + sql);
-			ResultSet rs = VideoGameDemo.stmt.executeQuery(sql);
-			return !rs.next();
-		} catch (SQLException e) { e.printStackTrace(); }
-		return false;
+		return find(id) == null;
 	}
 	
 	public String getCustomerName() {

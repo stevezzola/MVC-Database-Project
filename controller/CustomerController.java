@@ -1,5 +1,7 @@
 package controller;
 
+import java.util.HashMap;
+
 import model.Customer;
 import view.VideoGameView;
 
@@ -16,8 +18,22 @@ public class CustomerController {
 		
 	}
 	
+	
 	public void read(String customerId) {
 		model = Customer.find(customerId);
+		updateView();
+	}
+	
+	public void read(String a, String b) {
+		HashMap<String, String> args = new HashMap<String, String>();
+		args.put("customerName", "Xavier Carlson");
+		args.put("gender", "M");
+		args.put("id", "87654321");
+		args.put("age", "19");
+		args.put("birthDate", "1994-05-23");
+		args.put("playLevel", "Medium");
+		model = new Customer(args);
+		model.save();
 		updateView();
 	}
 	
@@ -78,8 +94,7 @@ public class CustomerController {
 	}
 	
 	public void updateView() {
-		view.jTextArea1.setText("");
-		view.jTextArea1.append(customerToString());
+		System.out.println(customerToString());
 	}
 	
 	public String customerToString() {

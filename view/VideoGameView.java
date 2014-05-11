@@ -27,19 +27,6 @@ import controller.GameController;
 
 import java.awt.BorderLayout;
 
-
-/**
-* This code was edited or generated using CloudGarden's Jigloo
-* SWT/Swing GUI Builder, which is free for non-commercial
-* use. If Jigloo is being used commercially (ie, by a corporation,
-* company or business for any purpose whatever) then you
-* should purchase a license for each developer using Jigloo.
-* Please visit www.cloudgarden.com for details.
-* Use of Jigloo implies acceptance of these licensing terms.
-* A COMMERCIAL LICENSE HAS NOT BEEN PURCHASED FOR
-* THIS MACHINE, SO JIGLOO OR THIS CODE CANNOT BE USED
-* LEGALLY FOR ANY CORPORATE OR COMMERCIAL PURPOSE.
-*/
 @SuppressWarnings("serial")
 public class VideoGameView extends javax.swing.JFrame {
 	private JPanel pBar;
@@ -57,8 +44,6 @@ public class VideoGameView extends javax.swing.JFrame {
 	private JPanel pCustomer;
 	private ButtonGroup buttonGroup1;
 	public JTextArea jTextArea1;
-	private JTextField jTextField2;
-	private JLabel jLabel2;
 	private JTextField jTextField1;
 	private JLabel jLabel1;
 	private JPanel pMain;
@@ -75,6 +60,12 @@ public class VideoGameView extends javax.swing.JFrame {
 	private JButton bSearch;
 	private JButton bAddNew;
 	private JTable table;
+	private JPanel pTool;
+	private JButton bUpdate;
+	private JButton bUpdateAll;
+	private JButton bDelete;
+	private JButton bPurchases;
+	private JButton bRecent;
 	
 	public VideoGameView() { 
 		super();
@@ -223,19 +214,11 @@ public class VideoGameView extends javax.swing.JFrame {
 
 						jLabel1 = new JLabel();
 						pBar.add(jLabel1);
-						jLabel1.setText("Customer ID:");
+						jLabel1.setText("(Quick Search) ID #:");
 						
 						jTextField1 = new JTextField();
 						pBar.add(jTextField1);
 						jTextField1.setPreferredSize(new java.awt.Dimension(140, 20));
-
-						jLabel2 = new JLabel();
-						pBar.add(jLabel2);
-						jLabel2.setText("Game ID:");
-
-						jTextField2 = new JTextField();
-						pBar.add(jTextField2);
-						jTextField2.setPreferredSize(new java.awt.Dimension(140, 20));
 
 						jButton1 = new JButton();
 						pBar.add(jButton1);
@@ -246,6 +229,25 @@ public class VideoGameView extends javax.swing.JFrame {
 								jButton1ActionPerformed(evt);
 							}
 						});
+						
+					pTool = new JPanel();
+					pTool.setBackground(Color.LIGHT_GRAY);
+					pMain.add(pTool, BorderLayout.SOUTH);
+						
+						bUpdate = new JButton("Update");
+						pTool.add(bUpdate);
+						
+						bUpdateAll = new JButton("Update All");
+						pTool.add(bUpdateAll);
+						
+						bDelete = new JButton("Delete");
+						pTool.add(bDelete);
+						
+						bPurchases = new JButton("Purchases");
+						pTool.add(bPurchases);
+						
+						bRecent = new JButton("Recent...");
+						pTool.add(bRecent);
 						
 					int numRows = 30;
 					String[] colHeadings1 = {"COLUMN1","COLUMN2", "COLUMN3","COLUMN4", "COLUMN5","COLUMN6"};
@@ -269,15 +271,13 @@ public class VideoGameView extends javax.swing.JFrame {
 	
 	private void jButton1ActionPerformed(ActionEvent evt) {
 		String input = jTextField1.getText();
-		if (!input.equals("")) {
+		if (!input.contains("-")) {
 			//Send input to Customer Controller
-				CustomerController controller;
-				controller = new CustomerController(new Customer(), this);
+				CustomerController controller = new CustomerController(new Customer(), this);
 				controller.read(input);
 		}
 		else {
 			//Send input to Game Controller
-			input = jTextField2.getText();
 			GameController controller = new GameController(new Game(), this);
 			controller.read(input);
 		}
