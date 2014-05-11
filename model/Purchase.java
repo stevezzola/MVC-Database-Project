@@ -43,17 +43,17 @@ public class Purchase {
 		} catch (SQLException e) { e.printStackTrace(); }
 	}
 	
-	public static Purchase find(String id) {
+	public static Purchase find(String customerId, String gameId) {
 		HashMap<String, String> params = new HashMap<String, String>();
 		try {
-			String sql = "SELECT * FROM Game WHERE id = '" + id + "'";
+			String sql = "SELECT * FROM Game WHERE customerId = '"
+					+ customerId + "'" + " AND " + "gameId = '" + gameId + "'";
 			ResultSet rs = VideoGameDemo.stmt.executeQuery(sql);
 			if (rs.next()) {
-				params.put("title", rs.getString("title"));
-				params.put("id", rs.getString("id"));
-				params.put("company", rs.getString("company"));
-				params.put("console", rs.getString("console"));
-				params.put("price", rs.getString("price"));
+				params.put("customerId", rs.getString("customerId"));
+				params.put("gameId", rs.getString("gameId"));
+				params.put("purchaseDate", rs.getString("purchaseDate"));
+				params.put("rating", String.valueOf(rs.getDouble("rating")));
 			}
 		} catch (SQLException e) { e.printStackTrace(); }
 		return new Purchase(params);
@@ -74,12 +74,10 @@ public class Purchase {
 			ResultSet rs = VideoGameDemo.stmt.executeQuery(sql);
 			HashMap<String, String> params = new HashMap<String, String>();
 			while (rs.next()) {
-				params.put("PurchaseName", rs.getString("PurchaseName"));
-				params.put("id", rs.getString("id"));
-				params.put("gender", rs.getString("gender"));
-				params.put("age", String.valueOf(rs.getInt("age")));
-				params.put("birthDate", rs.getString("birthDate"));
-				params.put("playLevel", rs.getString("playLevel"));
+				params.put("customerId", rs.getString("customerId"));
+				params.put("gameId", rs.getString("gameId"));
+				params.put("purchaseDate", rs.getString("purchaseDate"));
+				params.put("rating", String.valueOf(rs.getDouble("rating")));
 				list.add(new Purchase(params));
 			}
 		} catch (SQLException e) { e.printStackTrace(); }
