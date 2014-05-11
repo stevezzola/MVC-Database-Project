@@ -34,7 +34,7 @@ public class Customer {
 		String sql = "CREATE TABLE IF NOT EXISTS Customer " +
 				"(customerName varChar(50), " +
 				"id char(8) not null, " +
-				"gender char(1), " +
+				"gender varchar(6), " +
 				"age integer, " +
 				"birthDate date, " +
 				"playLevel varChar(12), " +

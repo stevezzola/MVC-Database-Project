@@ -32,7 +32,7 @@ public class Game {
 				"(title varChar(50), " +
 				"id char(10) not null, " +
 				"company varChar(50), " +
-				"console varChar(5), " +
+				"console varChar(10), " +
 				"price decimal(5,2), " +
 				"primary key (id)" +
 				")";
@@ -98,9 +98,9 @@ public class Game {
 	
 	public boolean save() {
 		if (this.isNewRecord()) {
-			String sql = "INSERT INTO Customer (title, id, company, console, price) " + 
-					"VALUES ('" + title + "', " + "'" + id + "', " + "'" + company + "', " +
-					console + ", " + "'" + price + "')";
+			String sql = "INSERT INTO Game (title, id, company, console, price) " + 
+					"VALUES ('" + title + "', " + "'" + id + "', " + "'" + company + "', '" +
+					console + "', " + "'" + price + "')";
 			System.out.println("Executing query: " + sql);
 			try { VideoGameDemo.stmt.executeUpdate(sql); }
 			catch (SQLException e) { 
@@ -109,7 +109,7 @@ public class Game {
 			}
 			return true;
 		} else {
-			String sql = "UPDATE Customer SET" +
+			String sql = "UPDATE Game SET" +
 					" title = '" + title + "', " +
 					" id = '" + id + "', " +
 					" company = '" + company + "', " +

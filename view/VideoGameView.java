@@ -208,12 +208,17 @@ public class VideoGameView extends javax.swing.JFrame {
 							pButtons.add(bSearch);
 							bSearch.addActionListener(new ActionListener() {
 								public void actionPerformed(ActionEvent evt) {
-									pSearchActionPerformed(evt);
+									bSearchActionPerformed(evt);
 								}
 							});
 							
 							bAddNew = new JButton("Add New");
 							pButtons.add(bAddNew);
+							bAddNew.addActionListener(new ActionListener() {
+								public void actionPerformed(ActionEvent evt) {
+									bAddNewActionPerformed(evt);
+								}
+							});
 
 					pBar = new JPanel();
 					pBar.setBackground(Color.LIGHT_GRAY);
@@ -290,7 +295,7 @@ public class VideoGameView extends javax.swing.JFrame {
 		}
 	}
 	
-	private void pSearchActionPerformed(ActionEvent evt) {
+	private void bSearchActionPerformed(ActionEvent evt) {
 		HashMap<String, String> args = new HashMap<String, String>();
 		if (cardSelected == 1) {
 			args.put("customerName", tfName.getText());
@@ -310,7 +315,30 @@ public class VideoGameView extends javax.swing.JFrame {
 			args.put("price", tfPrice.getText());
 			GameController controller = new GameController(new Game(), this);
 			controller.read(args);
-		}		
+		}	
+	}
+	
+	private void bAddNewActionPerformed(ActionEvent evt) {
+		HashMap<String, String> args = new HashMap<String, String>();
+		if (cardSelected == 1) {
+			args.put("customerName", tfName.getText());
+			args.put("id", tfCId.getText());
+			args.put("gender", cbGender.getSelectedItem().toString());
+			args.put("age", tfAge.getText());
+			args.put("birthDate", tfBirthDate.getText());
+			args.put("playLevel", cbPlayLevel.getSelectedItem().toString());
+			CustomerController controller = new CustomerController(new Customer(), this);
+			controller.create(args);
+		}
+		else if (cardSelected == 2) {
+			args.put("title", tfTitle.getText());
+			args.put("id", tfGId.getText());
+			args.put("company", tfCompany.getText());
+			args.put("console", cbConsole.getSelectedItem().toString());
+			args.put("price", tfPrice.getText());
+			GameController controller = new GameController(new Game(), this);
+			controller.create(args);
+		}	
 	}
 	
 	private void changeForm(int index) {

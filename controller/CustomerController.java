@@ -15,8 +15,10 @@ public class CustomerController {
 		this.view = view;
 	}
 	
-	public void create() {
-		
+	public void create(HashMap<String, String> args) {
+		model = new Customer(args);
+		model.save();
+		System.out.println("New Customer Saved!");
 	}
 	
 	public void read(String customerId) {
