@@ -59,6 +59,14 @@ public class Purchase {
 		return new Purchase(params);
 	}
 	
+	public static ArrayList<Purchase> where(String[][] args) {
+		HashMap<String, String> hArgs = new HashMap<String, String>();
+		for (String[] row : args) {
+			hArgs.put(row[0], row[1]);
+		}
+		return where(hArgs);
+	}
+	
 	public static ArrayList<Purchase> where(HashMap<String, String> args) {
 		ArrayList<Purchase> list = new ArrayList<Purchase>();
 		if (args.isEmpty()) return list;
