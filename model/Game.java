@@ -33,7 +33,7 @@ public class Game {
 				"id char(10) not null, " +
 				"company varChar(50), " +
 				"console varChar(5), " +
-				"price varChar(8), " +
+				"price decimal(5,2), " +
 				"primary key (id)" +
 				")";
 		try {
@@ -88,7 +88,7 @@ public class Game {
 				params.put("title", rs.getString("title"));
 				params.put("id", rs.getString("id"));
 				params.put("company", rs.getString("company"));
-				params.put("console", String.valueOf(rs.getInt("console")));
+				params.put("console", rs.getString("console"));
 				params.put("price", rs.getString("price"));
 				list.add(new Game(params));
 			}

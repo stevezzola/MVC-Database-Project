@@ -1,5 +1,9 @@
 package controller;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
+import model.Customer;
 import model.Game;
 import view.VideoGameView;
 
@@ -20,6 +24,14 @@ public class GameController {
 	public void read(String customerId) {
 		model = Game.find(customerId);
 		updateView();
+	}
+	
+	public void read(HashMap<String, String> args) {
+		ArrayList<Game> games = Game.where(args);
+		for (int i = 0; i < games.size(); i++) {
+			model = games.get(i);
+			updateView();
+		}
 	}
 	
 	public void update() {

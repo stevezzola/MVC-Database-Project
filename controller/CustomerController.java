@@ -1,5 +1,6 @@
 package controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import model.Customer;
@@ -18,23 +19,17 @@ public class CustomerController {
 		
 	}
 	
-	
 	public void read(String customerId) {
 		model = Customer.find(customerId);
 		updateView();
 	}
 	
-	public void read(String a, String b) {
-		HashMap<String, String> args = new HashMap<String, String>();
-		args.put("customerName", "Xavier Carlson");
-		args.put("gender", "M");
-		args.put("id", "87654321");
-		args.put("age", "19");
-		args.put("birthDate", "1994-05-23");
-		args.put("playLevel", "Medium");
-		model = new Customer(args);
-		model.save();
-		updateView();
+	public void read(HashMap<String, String> args) {
+		ArrayList<Customer> customers = Customer.where(args);
+		for (int i = 0; i < customers.size(); i++) {
+			model = customers.get(i);
+			updateView();
+		}
 	}
 	
 	public void update() {

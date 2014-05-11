@@ -26,11 +26,12 @@ import controller.CustomerController;
 import controller.GameController;
 
 import java.awt.BorderLayout;
+import java.util.HashMap;
 
 @SuppressWarnings("serial")
 public class VideoGameView extends javax.swing.JFrame {
 	private JPanel pBar;
-	private JButton jButton1;
+	private JButton bQuick;
 	private JRadioButton rbGame;
 	private JRadioButton rbCustomer;
 	private JTextField tfBirthDate;
@@ -66,6 +67,7 @@ public class VideoGameView extends javax.swing.JFrame {
 	private JButton bDelete;
 	private JButton bPurchases;
 	private JButton bRecent;
+	private int cardSelected = 1;
 	
 	public VideoGameView() { 
 		super();
@@ -115,7 +117,7 @@ public class VideoGameView extends javax.swing.JFrame {
 								pCustomer.add(tfCId, gbc);
 								
 								gbc.gridy=2;
-								String[] genders = {"Select...", "Male", "Female"};
+								String[] genders = {"", "Male", "Female"};
 								cbGender = new JComboBox<String>(genders);
 								pCustomer.add(cbGender, gbc);
 								
@@ -128,7 +130,7 @@ public class VideoGameView extends javax.swing.JFrame {
 								pCustomer.add(tfBirthDate, gbc);
 								
 								gbc.gridy=5;
-								String[] playLevels = {"Select...", "Beginner", "Casual", "Medium", "Expert", "Hardcore" };
+								String[] playLevels = {"", "Beginner", "Casual", "Medium", "Expert", "Hardcore" };
 								cbPlayLevel = new JComboBox<String>(playLevels);
 								pCustomer.add(cbPlayLevel, gbc);
 							
@@ -137,7 +139,7 @@ public class VideoGameView extends javax.swing.JFrame {
 							pGame.setLayout(new GridBagLayout());
 							pSearch.add(pGame, BorderLayout.CENTER);
 								
-								String [] gameLabels = {"Title:", "ID #:", "Console:", "Company:", "Price:"};
+								String [] gameLabels = {"Title:", "ID #:", "Company:", "Console:", "Price:"};
 								gbc.gridx = 0;
 								for (int i = 0; i < 5; i++) {
 									JLabel label = new JLabel(gameLabels[i]);
@@ -154,14 +156,14 @@ public class VideoGameView extends javax.swing.JFrame {
 								pGame.add(tfGId, gbc);
 								
 								gbc.gridy = 2;
-								String[] consoles = {"Select...", "PC", "Xbox One", "PS4", "Wii U"};
-								cbConsole = new JComboBox<String>(consoles);
-								pGame.add(cbConsole, gbc);
-							
-								gbc.gridy = 3;
 								tfCompany = new JTextField();
 								pGame.add(tfCompany, gbc);
 
+								gbc.gridy = 3;
+								String[] consoles = {"", "PC", "Xbox One", "PS4", "Wii U"};
+								cbConsole = new JComboBox<String>(consoles);
+								pGame.add(cbConsole, gbc);
+								
 								gbc.gridy = 4;
 								tfPrice = new JTextField();
 								pGame.add(tfPrice, gbc);
@@ -204,6 +206,11 @@ public class VideoGameView extends javax.swing.JFrame {
 							
 							bSearch = new JButton("Search");
 							pButtons.add(bSearch);
+							bSearch.addActionListener(new ActionListener() {
+								public void actionPerformed(ActionEvent evt) {
+									pSearchActionPerformed(evt);
+								}
+							});
 							
 							bAddNew = new JButton("Add New");
 							pButtons.add(bAddNew);
@@ -220,13 +227,13 @@ public class VideoGameView extends javax.swing.JFrame {
 						pBar.add(jTextField1);
 						jTextField1.setPreferredSize(new java.awt.Dimension(140, 20));
 
-						jButton1 = new JButton();
-						pBar.add(jButton1);
-						jButton1.setText("Search");
-						jButton1.setPreferredSize(new java.awt.Dimension(90, 20));
-						jButton1.addActionListener(new ActionListener() {
+						bQuick = new JButton();
+						pBar.add(bQuick);
+						bQuick.setText("Search");
+						bQuick.setPreferredSize(new java.awt.Dimension(90, 20));
+						bQuick.addActionListener(new ActionListener() {
 							public void actionPerformed(ActionEvent evt) {
-								jButton1ActionPerformed(evt);
+								bQuickActionPerformed(evt);
 							}
 						});
 						
@@ -269,7 +276,7 @@ public class VideoGameView extends javax.swing.JFrame {
 		}
 	}
 	
-	private void jButton1ActionPerformed(ActionEvent evt) {
+	private void bQuickActionPerformed(ActionEvent evt) {
 		String input = jTextField1.getText();
 		if (!input.contains("-")) {
 			//Send input to Customer Controller
@@ -283,13 +290,38 @@ public class VideoGameView extends javax.swing.JFrame {
 		}
 	}
 	
+	private void pSearchActionPerformed(ActionEvent evt) {
+		HashMap<String, String> args = new HashMap<String, String>();
+		if (cardSelected == 1) {
+			args.put("customerName", tfName.getText());
+			args.put("id", tfCId.getText());
+			args.put("gender", cbGender.getSelectedItem().toString());
+			args.put("age", tfAge.getText());
+			args.put("birthDate", tfBirthDate.getText());
+			args.put("playLevel", cbPlayLevel.getSelectedItem().toString());
+			CustomerController controller = new CustomerController(new Customer(), this);
+			controller.read(args);
+		}
+		else if (cardSelected == 2) {
+			args.put("title", tfTitle.getText());
+			args.put("id", tfGId.getText());
+			args.put("company", tfCompany.getText());
+			args.put("console", cbConsole.getSelectedItem().toString());
+			args.put("price", tfPrice.getText());
+			GameController controller = new GameController(new Game(), this);
+			controller.read(args);
+		}		
+	}
+	
 	private void changeForm(int index) {
 		CardLayout cl = (CardLayout)(pCards.getLayout());
 	   	if (index == 1) {
 	   		cl.show(pCards, "Customer");
+	   		cardSelected = 1;
 		}
 		else if (index == 2) {
 			cl.show(pCards, "Game");
+			cardSelected = 2;
 		}
 	}
 }

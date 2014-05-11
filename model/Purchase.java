@@ -32,7 +32,7 @@ public class Purchase {
 				"(customerId char(8), " +
 				"gameId char(10) not null, " +
 				"purchaseDate date, " +
-				"rating decimal(2,1), " +
+				"rating integer, " +
 				"primary key (customerId, gameId), " +
 				"foreign key (customerId) references Customer (id)," +
 				"foreign key (gameId) references Game (id)" +
