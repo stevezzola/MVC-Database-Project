@@ -91,6 +91,61 @@ public class Purchase {
 		} catch (SQLException e) { e.printStackTrace(); }
 		return list;
 	}
+	
+	public boolean save() {
+		if (this.isNewRecord()) {
+			String sql = "INSERT INTO Purchase (customerId, gameId, purchaseDate, rating) " + 
+					"VALUES ('" + customerId + "', " + "'" + gameId + "', " + "'" + purchaseDate + "', " +
+					rating + "')";
+			System.out.println("Executing query: " + sql);
+			try { VideoGameDemo.stmt.executeUpdate(sql); }
+			catch (SQLException e) { 
+				e.printStackTrace();
+				return false; 
+			}
+			return true;
+		} else {
+			String sql = "UPDATE Purchase SET" +
+					" customerId = '" + customerId + "', " +
+					" gameId = '" + gameId + "', " +
+					" purchaseDate = '" + purchaseDate + "', " +
+					" rating = " + rating + ", " +
+					" WHERE customerId = '" + customerId + "'" +
+					" AND gameId = '" + gameId + "'";
+			System.out.println("Executing query: " + sql);
+			try { VideoGameDemo.stmt.executeUpdate(sql); }
+			catch (SQLException e) {
+				e.printStackTrace();
+				return false;
+			}
+			return true;
+		}
+	}
+	
+	public boolean delete() {
+		if (!isNewRecord()) {
+			String sql = "DELETE FROM Game WHERE customerId = '"
+					+ customerId + "'" + " AND " + "gameId = '" + gameId + "'";
+			System.out.println("Executing query: " + sql);
+			try { VideoGameDemo.stmt.executeUpdate(sql); }
+			catch (SQLException e) {
+				e.printStackTrace();
+				return false;
+			}
+		} else return false;
+		return true;
+	}
+	
+	private boolean isNewRecord() {
+		String sql = "SELECT * FROM Game WHERE customerId = '"
+				+ customerId + "'" + " AND " + "gameId = '" + gameId + "'";
+		try {
+			System.out.println("Executing query: " + sql);
+			ResultSet rs = VideoGameDemo.stmt.executeQuery(sql);
+			return !rs.next();
+		} catch (SQLException e) { e.printStackTrace(); }
+		return false;
+	}
 
 	public String getCustomerId() {
 		return customerId;
