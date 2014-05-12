@@ -12,7 +12,6 @@ import view.VideoGameView;
 public class CustomerController {
 	private Customer model;
 	private VideoGameView view;
-	private DefaultTableModel tableModel = (DefaultTableModel) view.table.getModel();
 	
 	public CustomerController(Customer model, VideoGameView view) {
 		this.model = model;
@@ -111,6 +110,7 @@ public class CustomerController {
 		String[] row = 
 			    {getCustomerName(), getId(), getGender(), 
 			    	Integer.toString(getAge()), getBirthDate(), getPlayLevel()};
+		DefaultTableModel tableModel = (DefaultTableModel) view.table.getModel();
 		tableModel.setColumnIdentifiers(view.customerColumns);
 		tableModel.setRowCount(0);
 		tableModel.addRow(row);
