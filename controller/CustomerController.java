@@ -3,7 +3,6 @@ package controller;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
 import model.Customer;
@@ -21,21 +20,24 @@ public class CustomerController {
 	public void create(HashMap<String, String> args) {
 		model = new Customer(args);
 		model.save();
-		updateView();
+		ArrayList<Customer> customers = new ArrayList<Customer>();
+		customers.add(model);
+		updateView(customers);
 		System.out.println("New Customer Saved!");
 	}
 	
 	public void read(String customerId) {
 		model = Customer.find(customerId);
-		updateView();
+		if (!(model == null)) {
+			ArrayList<Customer> customers = new ArrayList<Customer>();
+			customers.add(model);
+			updateView(customers);
+		}
 	}
 	
 	public void read(HashMap<String, String> args) {
 		ArrayList<Customer> customers = Customer.where(args);
-		for (int i = 0; i < customers.size(); i++) {
-			model = customers.get(i);
-			updateView();
-		}
+		updateView(customers);
 	}
 	
 	public void update(HashMap<String, String> args) {
@@ -46,14 +48,18 @@ public class CustomerController {
 		setBirthDate(args.get("birthDate"));
 		setPlayLevel(args.get("playLevel"));
 		model.save();
-		updateView();
+		ArrayList<Customer> customers = new ArrayList<Customer>();
+		customers.add(model);
+		updateView(customers);
 		System.out.println("Customer Updated!");
 	}
 	
 	public void destroy(HashMap<String, String> args) {
 		model = Customer.find(args.get("id"));
 		model.delete();
-		updateView();
+		ArrayList<Customer> customers = new ArrayList<Customer>();
+		customers.add(model);
+		updateView(customers);
 		System.out.println("Customer Deleted!");
 	}
 	
@@ -105,16 +111,17 @@ public class CustomerController {
 		model.setPlayLevel(playLevel);
 	}
 	
-	public void updateView() {
+	public void updateView(ArrayList<Customer> customers) {
 		//System.out.println(customerToString());
-		String[] row = 
-			    {getCustomerName(), getId(), getGender(), 
-			    	Integer.toString(getAge()), getBirthDate(), getPlayLevel()};
 		DefaultTableModel tableModel = (DefaultTableModel) view.table.getModel();
-		tableModel.setColumnIdentifiers(view.customerColumns);
 		tableModel.setRowCount(0);
-		tableModel.addRow(row);
-
+		tableModel.setColumnIdentifiers(view.customerColumns);
+		for (int i = 0; i < customers.size(); i++) {
+			model = customers.get(i);
+			String[] row = {getCustomerName(), getId(), getGender(), 
+					Integer.toString(getAge()), getBirthDate(), getPlayLevel()};
+			tableModel.addRow(row);
+		}
 	}
 	
 	public String customerToString() {

@@ -27,6 +27,19 @@ import controller.GameController;
 import java.awt.BorderLayout;
 import java.util.HashMap;
 
+
+/**
+* This code was edited or generated using CloudGarden's Jigloo
+* SWT/Swing GUI Builder, which is free for non-commercial
+* use. If Jigloo is being used commercially (ie, by a corporation,
+* company or business for any purpose whatever) then you
+* should purchase a license for each developer using Jigloo.
+* Please visit www.cloudgarden.com for details.
+* Use of Jigloo implies acceptance of these licensing terms.
+* A COMMERCIAL LICENSE HAS NOT BEEN PURCHASED FOR
+* THIS MACHINE, SO JIGLOO OR THIS CODE CANNOT BE USED
+* LEGALLY FOR ANY CORPORATE OR COMMERCIAL PURPOSE.
+*/
 @SuppressWarnings("serial")
 public class VideoGameView extends javax.swing.JFrame {
 	private JPanel pBar;
@@ -58,6 +71,7 @@ public class VideoGameView extends javax.swing.JFrame {
 	private JPanel pButtons;
 	private JButton bSearch;
 	private JButton bAddNew;
+	private JButton bClear;
 	public JTable table;
 	private JPanel pTool;
 	private JButton bUpdate;
@@ -88,7 +102,7 @@ public class VideoGameView extends javax.swing.JFrame {
 					pSearch = new JPanel();
 					getContentPane().add(pSearch, BorderLayout.WEST);
 					pSearch.setLayout(new BorderLayout());
-					pSearch.setPreferredSize(new java.awt.Dimension(180, 330));
+					pSearch.setPreferredSize(new java.awt.Dimension(210, 330));
 					
 						pRadio = new JPanel();
 						pSearch.add(pRadio, BorderLayout.NORTH);
@@ -204,8 +218,10 @@ public class VideoGameView extends javax.swing.JFrame {
 							
 						pButtons = new JPanel();
 						pSearch.add(pButtons, BorderLayout.SOUTH);
+						Insets buttonInsets = new Insets (5, 5, 5, 5);
 							
 							bSearch = new JButton("Search");
+							bSearch.setMargin(buttonInsets);
 							pButtons.add(bSearch);
 							bSearch.addActionListener(new ActionListener() {
 								public void actionPerformed(ActionEvent evt) {
@@ -214,10 +230,20 @@ public class VideoGameView extends javax.swing.JFrame {
 							});
 							
 							bAddNew = new JButton("Add New");
+							bAddNew.setMargin(buttonInsets);
 							pButtons.add(bAddNew);
 							bAddNew.addActionListener(new ActionListener() {
 								public void actionPerformed(ActionEvent evt) {
 									bAddNewActionPerformed(evt);
+								}
+							});
+							
+							bClear = new JButton("Clear");
+							bClear.setMargin(buttonInsets);
+							pButtons.add(bClear);
+							bClear.addActionListener(new ActionListener() {
+								public void actionPerformed(ActionEvent evt) {
+									bClearActionPerformed(evt);
 								}
 							});
 
@@ -284,7 +310,7 @@ public class VideoGameView extends javax.swing.JFrame {
 					pMain.add(scroll1, BorderLayout.CENTER);
 
 				pack();
-				this.setSize(800, 380);
+				this.setSize(840, 380);
 				this.setResizable(false);
 				setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 				setVisible(true);
@@ -327,6 +353,24 @@ public class VideoGameView extends javax.swing.JFrame {
 		else if (cardSelected == 2) {
 			GameController controller = new GameController(new Game(), this);
 			controller.create(getGameInfo());
+		}	
+	}
+	
+	private void bClearActionPerformed(ActionEvent evt) {
+		if (cardSelected == 1) {
+			tfName.setText("");
+			tfCId.setText("");
+			cbGender.setSelectedIndex(0);
+			tfAge.setText("");
+			tfBirthDate.setText("");
+			cbPlayLevel.setSelectedIndex(0);
+		}
+		else if (cardSelected == 2) {
+			tfTitle.setText("");
+			tfGId.setText("");
+			tfCompany.setText("");
+			cbConsole.setSelectedIndex(0);
+			tfPrice.setText("");
 		}	
 	}
 	

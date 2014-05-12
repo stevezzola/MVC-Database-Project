@@ -21,20 +21,22 @@ public class GameController {
 	public void create(HashMap<String, String> args) {
 		model = new Game(args);
 		model.save();
+		ArrayList<Game> games = new ArrayList<Game>();
+		games.add(model);
+		updateView(games);
 		System.out.println("New Game Saved!");
 	}
 	
 	public void read(String customerId) {
 		model = Game.find(customerId);
-		updateView();
+		ArrayList<Game> games = new ArrayList<Game>();
+		games.add(model);
+		updateView(games);
 	}
 	
 	public void read(HashMap<String, String> args) {
 		ArrayList<Game> games = Game.where(args);
-		for (int i = 0; i < games.size(); i++) {
-			model = games.get(i);
-			updateView();
-		}
+		updateView(games);
 	}
 	
 	public void update(HashMap<String, String> args) {
@@ -44,14 +46,18 @@ public class GameController {
 		setConsole((args.get("console")));
 		setPrice(args.get("price"));
 		model.save();
-		updateView();
+		ArrayList<Game> games = new ArrayList<Game>();
+		games.add(model);
+		updateView(games);
 		System.out.println("Game Updated!");
 	}
 	
 	public void destroy(HashMap<String, String> args) {
 		model = Game.find(args.get("id"));
 		model.delete();
-		updateView();
+		ArrayList<Game> games = new ArrayList<Game>();
+		games.add(model);
+		updateView(games);
 		System.out.println("Game Deleted!");
 	}
 
@@ -95,16 +101,17 @@ public class GameController {
 		model.setPrice(price);
 	}
 	
-	public void updateView() {
+	public void updateView(ArrayList<Game> games) {
 		//System.out.println(gameToString());
-		String[] row = 
-		    {getTitle(), getId(), getCompany(), 
-				getConsole(), getPrice()};
-		DefaultTableModel model = (DefaultTableModel) view.table.getModel();
-		model.setColumnIdentifiers(view.gameColumns);
-		model.setRowCount(0);
-		model.addRow(row);
-	
+		DefaultTableModel tableModel = (DefaultTableModel) view.table.getModel();
+		tableModel.setColumnIdentifiers(view.gameColumns);
+		tableModel.setRowCount(0);
+		for (int i = 0; i < games.size(); i++) {
+			model = games.get(i);
+			String[] row = {getTitle(), getId(), getCompany(), 
+					getConsole(), getPrice()};
+			tableModel.addRow(row);
+		}
 	}
 	
 	public String gameToString() {
