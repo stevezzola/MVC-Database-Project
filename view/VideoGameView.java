@@ -15,7 +15,6 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.WindowConstants;
 import javax.swing.table.DefaultTableModel;
@@ -44,7 +43,6 @@ public class VideoGameView extends javax.swing.JFrame {
 	private JTextField tfName;
 	private JPanel pCustomer;
 	private ButtonGroup buttonGroup1;
-	public JTextArea jTextArea1;
 	private JTextField jTextField1;
 	private JLabel jLabel1;
 	private JPanel pMain;
@@ -60,7 +58,7 @@ public class VideoGameView extends javax.swing.JFrame {
 	private JPanel pButtons;
 	private JButton bSearch;
 	private JButton bAddNew;
-	private JTable table;
+	public JTable table;
 	private JPanel pTool;
 	private JButton bUpdate;
 	private JButton bUpdateAll;
@@ -69,6 +67,8 @@ public class VideoGameView extends javax.swing.JFrame {
 	private JButton bNewPurchase;
 	private JButton bRecent;
 	private int cardSelected = 1;
+	public String[] customerColumns = {"Name","Id #", "Gender","Age", "Birth Date","Play Level"};
+	public String[] gameColumns = {"Title","Id #", "Company","Console", "Price"};
 	
 	public VideoGameView() { 
 		super();
@@ -275,11 +275,10 @@ public class VideoGameView extends javax.swing.JFrame {
 						bRecent = new JButton("Recent...");
 						pTool.add(bRecent);
 						
-					int numRows = 30;
-					String[] colHeadings1 = {"COLUMN1","COLUMN2", "COLUMN3","COLUMN4", "COLUMN5","COLUMN6"};
-					DefaultTableModel model = new DefaultTableModel(numRows, colHeadings1.length) ;
-					model.setColumnIdentifiers(colHeadings1);
-					table = new JTable(model);
+					int numRows = 0;
+					DefaultTableModel tableModel = new DefaultTableModel(numRows, customerColumns.length) ;
+					tableModel.setColumnIdentifiers(customerColumns);
+					table = new JTable(tableModel);
 						
 					JScrollPane scroll1 = new JScrollPane(table);
 					pMain.add(scroll1, BorderLayout.CENTER);

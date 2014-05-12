@@ -3,12 +3,16 @@ package controller;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
+
 import model.Customer;
 import view.VideoGameView;
 
 public class CustomerController {
 	private Customer model;
 	private VideoGameView view;
+	private DefaultTableModel tableModel = (DefaultTableModel) view.table.getModel();
 	
 	public CustomerController(Customer model, VideoGameView view) {
 		this.model = model;
@@ -18,6 +22,7 @@ public class CustomerController {
 	public void create(HashMap<String, String> args) {
 		model = new Customer(args);
 		model.save();
+		updateView();
 		System.out.println("New Customer Saved!");
 	}
 	
@@ -102,7 +107,14 @@ public class CustomerController {
 	}
 	
 	public void updateView() {
-		System.out.println(customerToString());
+		//System.out.println(customerToString());
+		String[] row = 
+			    {getCustomerName(), getId(), getGender(), 
+			    	Integer.toString(getAge()), getBirthDate(), getPlayLevel()};
+		tableModel.setColumnIdentifiers(view.customerColumns);
+		tableModel.setRowCount(0);
+		tableModel.addRow(row);
+
 	}
 	
 	public String customerToString() {

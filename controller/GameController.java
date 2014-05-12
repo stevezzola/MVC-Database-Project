@@ -3,7 +3,8 @@ package controller;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import model.Customer;
+import javax.swing.table.DefaultTableModel;
+
 import model.Game;
 import view.VideoGameView;
 
@@ -95,7 +96,15 @@ public class GameController {
 	}
 	
 	public void updateView() {
-		System.out.println(gameToString());
+		//System.out.println(gameToString());
+		String[] row = 
+		    {getTitle(), getId(), getCompany(), 
+				getConsole(), getPrice()};
+		DefaultTableModel model = (DefaultTableModel) view.table.getModel();
+		model.setColumnIdentifiers(view.gameColumns);
+		model.setRowCount(0);
+		model.addRow(row);
+	
 	}
 	
 	public String gameToString() {
