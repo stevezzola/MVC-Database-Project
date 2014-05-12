@@ -43,10 +43,14 @@ public class CustomerController {
 		setPlayLevel(args.get("playLevel"));
 		model.save();
 		updateView();
+		System.out.println("Customer Updated!");
 	}
 	
 	public void destroy(HashMap<String, String> args) {
-		
+		model = Customer.find(args.get("id"));
+		model.delete();
+		updateView();
+		System.out.println("Customer Deleted!");
 	}
 	
 	public String getCustomerName() {

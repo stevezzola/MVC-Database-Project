@@ -260,6 +260,11 @@ public class VideoGameView extends javax.swing.JFrame {
 						
 						bDelete = new JButton("Delete");
 						pTool.add(bDelete);
+						bDelete.addActionListener(new ActionListener() {
+							public void actionPerformed(ActionEvent evt) {
+								bDeleteActionPerformed(evt);
+							}
+						});
 						
 						bPurchases = new JButton("Purchases");
 						pTool.add(bPurchases);
@@ -334,6 +339,17 @@ public class VideoGameView extends javax.swing.JFrame {
 		else if (cardSelected == 2) {
 			GameController controller = new GameController(new Game(), this);
 			controller.update(getGameInfo());
+		}	
+	}
+	
+	private void bDeleteActionPerformed(ActionEvent evt) {
+		if (cardSelected == 1) {
+			CustomerController controller = new CustomerController(new Customer(), this);
+			controller.destroy(getCustomerInfo());
+		}
+		else if (cardSelected == 2) {
+			GameController controller = new GameController(new Game(), this);
+			controller.destroy(getGameInfo());
 		}	
 	}
 	

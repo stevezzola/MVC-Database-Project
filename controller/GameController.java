@@ -3,6 +3,7 @@ package controller;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import model.Customer;
 import model.Game;
 import view.VideoGameView;
 
@@ -43,10 +44,14 @@ public class GameController {
 		setPrice(args.get("price"));
 		model.save();
 		updateView();
+		System.out.println("Game Updated!");
 	}
 	
 	public void destroy(HashMap<String, String> args) {
-		
+		model = Game.find(args.get("id"));
+		model.delete();
+		updateView();
+		System.out.println("Game Deleted!");
 	}
 
 	public String getTitle() {
