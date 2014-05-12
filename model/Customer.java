@@ -3,7 +3,9 @@ package model;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 
@@ -16,6 +18,10 @@ public class Customer {
 	private int age;
 	private String birthDate;
 	private String playLevel;
+	
+	private static class Fuzzy {
+		public static HashSet<String> words = new HashSet<String>(Arrays.asList("customerName"));
+	}
 	
 	public Customer() {
 	}
@@ -82,7 +88,11 @@ public class Customer {
 		while (it.hasNext()) {
 			Map.Entry<String, String> pair = (Map.Entry<String, String>) it.next();
 			if (pair.getValue() == null || pair.getValue().isEmpty()) continue;
-			sql += ("Customer." + pair.getKey() + " = '" + pair.getValue() + "' AND ");
+			if (Fuzzy.words.contains(pair.getKey()))
+				sql += ("LOWER(Customer." + pair.getKey() + ") LIKE LOWER('%" + pair.getValue() + "%') AND ");
+			else
+				sql += ("Customer." + pair.getKey() + " = '" + pair.getValue() + "' AND ");
+			
 		}
 		int index = sql.lastIndexOf(" AND ");
 		if (index != -1) sql = sql.substring(0, index);
