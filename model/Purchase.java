@@ -79,7 +79,8 @@ public class Purchase {
 			if (pair.getValue() == null || pair.getValue().isEmpty()) continue;
 			sql += ("Purchase." + pair.getKey() + " = '" + pair.getValue() + "' AND ");
 		}
-		sql = sql.substring(0, sql.lastIndexOf(" AND "));
+		int index = sql.lastIndexOf(" AND ");
+		if (index != -1) sql = sql.substring(0, index);
 		try {
 			System.out.println("Executing query: " + sql);
 			ResultSet rs = VideoGameDemo.stmt.executeQuery(sql);

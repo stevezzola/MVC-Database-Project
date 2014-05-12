@@ -74,12 +74,14 @@ public class Game {
 		if (args.isEmpty()) return list;
 		String sql = "SELECT * FROM Game WHERE ";
 		Iterator<Map.Entry<String, String>> it = args.entrySet().iterator();
+		if (!it.hasNext()) return list;
 		while (it.hasNext()) {
 			Map.Entry<String, String> pair = (Map.Entry<String, String>) it.next();
 			if (pair.getValue() == null || pair.getValue().isEmpty()) continue;
 			sql += ("Game." + pair.getKey() + " = '" + pair.getValue() + "' AND ");
 		}
-		sql = sql.substring(0, sql.lastIndexOf(" AND "));
+		int index = sql.lastIndexOf(" AND ");
+		if (index != -1) sql = sql.substring(0, index);
 		try {
 			System.out.println("Executing query: " + sql);
 			ResultSet rs = VideoGameDemo.stmt.executeQuery(sql);
