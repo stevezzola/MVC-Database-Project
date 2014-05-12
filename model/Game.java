@@ -113,8 +113,8 @@ public class Game {
 					" title = '" + title + "', " +
 					" id = '" + id + "', " +
 					" company = '" + company + "', " +
-					" console = " + console + ", " +
-					" price = '" + price + "', " +
+					" console = '" + console + "', " +
+					" price = '" + price + "'" +
 					" WHERE id = '" + id + "'";
 			System.out.println("Executing query: " + sql);
 			try { VideoGameDemo.stmt.executeUpdate(sql); }

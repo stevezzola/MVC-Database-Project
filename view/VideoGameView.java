@@ -66,6 +66,7 @@ public class VideoGameView extends javax.swing.JFrame {
 	private JButton bUpdateAll;
 	private JButton bDelete;
 	private JButton bPurchases;
+	private JButton bNewPurchase;
 	private JButton bRecent;
 	private int cardSelected = 1;
 	
@@ -248,6 +249,11 @@ public class VideoGameView extends javax.swing.JFrame {
 						
 						bUpdate = new JButton("Update");
 						pTool.add(bUpdate);
+						bUpdate.addActionListener(new ActionListener() {
+							public void actionPerformed(ActionEvent evt) {
+								bUpdateActionPerformed(evt);
+							}
+						});
 						
 						bUpdateAll = new JButton("Update All");
 						pTool.add(bUpdateAll);
@@ -257,6 +263,9 @@ public class VideoGameView extends javax.swing.JFrame {
 						
 						bPurchases = new JButton("Purchases");
 						pTool.add(bPurchases);
+						
+						bNewPurchase = new JButton("New Purchase");
+						pTool.add(bNewPurchase);
 						
 						bRecent = new JButton("Recent...");
 						pTool.add(bRecent);
@@ -296,48 +305,35 @@ public class VideoGameView extends javax.swing.JFrame {
 	}
 	
 	private void bSearchActionPerformed(ActionEvent evt) {
-		HashMap<String, String> args = new HashMap<String, String>();
 		if (cardSelected == 1) {
-			args.put("customerName", tfName.getText());
-			args.put("id", tfCId.getText());
-			args.put("gender", cbGender.getSelectedItem().toString());
-			args.put("age", tfAge.getText());
-			args.put("birthDate", tfBirthDate.getText());
-			args.put("playLevel", cbPlayLevel.getSelectedItem().toString());
 			CustomerController controller = new CustomerController(new Customer(), this);
-			controller.read(args);
+			controller.read(getCustomerInfo());
 		}
 		else if (cardSelected == 2) {
-			args.put("title", tfTitle.getText());
-			args.put("id", tfGId.getText());
-			args.put("company", tfCompany.getText());
-			args.put("console", cbConsole.getSelectedItem().toString());
-			args.put("price", tfPrice.getText());
 			GameController controller = new GameController(new Game(), this);
-			controller.read(args);
+			controller.read(getGameInfo());
 		}	
 	}
 	
 	private void bAddNewActionPerformed(ActionEvent evt) {
-		HashMap<String, String> args = new HashMap<String, String>();
 		if (cardSelected == 1) {
-			args.put("customerName", tfName.getText());
-			args.put("id", tfCId.getText());
-			args.put("gender", cbGender.getSelectedItem().toString());
-			args.put("age", tfAge.getText());
-			args.put("birthDate", tfBirthDate.getText());
-			args.put("playLevel", cbPlayLevel.getSelectedItem().toString());
 			CustomerController controller = new CustomerController(new Customer(), this);
-			controller.create(args);
+			controller.create(getCustomerInfo());
 		}
 		else if (cardSelected == 2) {
-			args.put("title", tfTitle.getText());
-			args.put("id", tfGId.getText());
-			args.put("company", tfCompany.getText());
-			args.put("console", cbConsole.getSelectedItem().toString());
-			args.put("price", tfPrice.getText());
 			GameController controller = new GameController(new Game(), this);
-			controller.create(args);
+			controller.create(getGameInfo());
+		}	
+	}
+	
+	private void bUpdateActionPerformed(ActionEvent evt) {
+		if (cardSelected == 1) {
+			CustomerController controller = new CustomerController(new Customer(), this);
+			controller.update(getCustomerInfo());
+		}
+		else if (cardSelected == 2) {
+			GameController controller = new GameController(new Game(), this);
+			controller.update(getGameInfo());
 		}	
 	}
 	
@@ -351,5 +347,26 @@ public class VideoGameView extends javax.swing.JFrame {
 			cl.show(pCards, "Game");
 			cardSelected = 2;
 		}
+	}
+	
+	private HashMap<String, String> getCustomerInfo() {
+		HashMap<String, String> args = new HashMap<String, String>();
+		args.put("customerName", tfName.getText());
+		args.put("id", tfCId.getText());
+		args.put("gender", cbGender.getSelectedItem().toString());
+		args.put("age", tfAge.getText());
+		args.put("birthDate", tfBirthDate.getText());
+		args.put("playLevel", cbPlayLevel.getSelectedItem().toString());
+		return args;
+	}
+	
+	private HashMap<String, String> getGameInfo() {
+		HashMap<String, String> args = new HashMap<String, String>();
+		args.put("title", tfTitle.getText());
+		args.put("id", tfGId.getText());
+		args.put("company", tfCompany.getText());
+		args.put("console", cbConsole.getSelectedItem().toString());
+		args.put("price", tfPrice.getText());
+		return args;
 	}
 }

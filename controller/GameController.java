@@ -35,11 +35,17 @@ public class GameController {
 		}
 	}
 	
-	public void update() {
-		
+	public void update(HashMap<String, String> args) {
+		model = Game.find(args.get("id"));
+		setTitle(args.get("title"));
+		setCompany(args.get("company"));
+		setConsole((args.get("console")));
+		setPrice(args.get("price"));
+		model.save();
+		updateView();
 	}
 	
-	public void destroy() {
+	public void destroy(HashMap<String, String> args) {
 		
 	}
 

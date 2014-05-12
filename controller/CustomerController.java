@@ -34,11 +34,18 @@ public class CustomerController {
 		}
 	}
 	
-	public void update() {
-		
+	public void update(HashMap<String, String> args) {
+		model = Customer.find(args.get("id"));
+		setCustomerName(args.get("customerName"));
+		setGender(args.get("gender"));
+		setAge(Integer.parseInt(args.get("age")));
+		setBirthDate(args.get("birthDate"));
+		setPlayLevel(args.get("playLevel"));
+		model.save();
+		updateView();
 	}
 	
-	public void destroy() {
+	public void destroy(HashMap<String, String> args) {
 		
 	}
 	
