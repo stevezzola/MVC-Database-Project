@@ -28,11 +28,9 @@ public class CustomerController {
 	
 	public void read(String customerId) {
 		model = Customer.find(customerId);
-		if (!(model == null)) {
-			ArrayList<Customer> customers = new ArrayList<Customer>();
-			customers.add(model);
-			updateView(customers);
-		}
+		ArrayList<Customer> customers = new ArrayList<Customer>();
+		customers.add(model);
+		updateView(customers);
 	}
 	
 	public void read(HashMap<String, String> args) {
@@ -50,7 +48,6 @@ public class CustomerController {
 		model.save();
 		ArrayList<Customer> customers = new ArrayList<Customer>();
 		customers.add(model);
-		updateView(customers);
 		System.out.println("Customer Updated!");
 	}
 	
@@ -118,9 +115,11 @@ public class CustomerController {
 		tableModel.setColumnIdentifiers(view.customerColumns);
 		for (int i = 0; i < customers.size(); i++) {
 			model = customers.get(i);
-			String[] row = {getCustomerName(), getId(), getGender(), 
-					Integer.toString(getAge()), getBirthDate(), getPlayLevel()};
-			tableModel.addRow(row);
+			if (!(model == null)) {
+				String[] row = {getCustomerName(), getId(), getGender(), 
+						Integer.toString(getAge()), getBirthDate(), getPlayLevel()};
+				tableModel.addRow(row);
+			}
 		}
 	}
 	

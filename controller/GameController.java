@@ -48,7 +48,6 @@ public class GameController {
 		model.save();
 		ArrayList<Game> games = new ArrayList<Game>();
 		games.add(model);
-		updateView(games);
 		System.out.println("Game Updated!");
 	}
 	

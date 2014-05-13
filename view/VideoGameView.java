@@ -16,7 +16,12 @@ import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
 import javax.swing.WindowConstants;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
 
 import model.Customer;
@@ -27,19 +32,6 @@ import controller.GameController;
 import java.awt.BorderLayout;
 import java.util.HashMap;
 
-
-/**
-* This code was edited or generated using CloudGarden's Jigloo
-* SWT/Swing GUI Builder, which is free for non-commercial
-* use. If Jigloo is being used commercially (ie, by a corporation,
-* company or business for any purpose whatever) then you
-* should purchase a license for each developer using Jigloo.
-* Please visit www.cloudgarden.com for details.
-* Use of Jigloo implies acceptance of these licensing terms.
-* A COMMERCIAL LICENSE HAS NOT BEEN PURCHASED FOR
-* THIS MACHINE, SO JIGLOO OR THIS CODE CANNOT BE USED
-* LEGALLY FOR ANY CORPORATE OR COMMERCIAL PURPOSE.
-*/
 @SuppressWarnings("serial")
 public class VideoGameView extends javax.swing.JFrame {
 	private JPanel pBar;
@@ -277,18 +269,25 @@ public class VideoGameView extends javax.swing.JFrame {
 						pTool.add(bUpdate);
 						bUpdate.addActionListener(new ActionListener() {
 							public void actionPerformed(ActionEvent evt) {
-								bUpdateActionPerformed(evt);
+								updateFromTable(table.getSelectedRow());
 							}
 						});
 						
 						bUpdateAll = new JButton("Update All");
 						pTool.add(bUpdateAll);
+						bUpdateAll.addActionListener(new ActionListener() {
+							public void actionPerformed(ActionEvent evt) {
+								for (int i = 0; i < table.getRowCount(); i++) {
+									updateFromTable(i);
+								}
+							}
+						});
 						
 						bDelete = new JButton("Delete");
 						pTool.add(bDelete);
 						bDelete.addActionListener(new ActionListener() {
 							public void actionPerformed(ActionEvent evt) {
-								bDeleteActionPerformed(evt);
+								deleteFromTable(table.getSelectedRow());
 							}
 						});
 						
@@ -305,6 +304,8 @@ public class VideoGameView extends javax.swing.JFrame {
 					DefaultTableModel tableModel = new DefaultTableModel(numRows, customerColumns.length) ;
 					tableModel.setColumnIdentifiers(customerColumns);
 					table = new JTable(tableModel);
+					ListSelectionModel listModel = table.getSelectionModel();
+					listModel.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 						
 					JScrollPane scroll1 = new JScrollPane(table);
 					pMain.add(scroll1, BorderLayout.CENTER);
@@ -373,26 +374,47 @@ public class VideoGameView extends javax.swing.JFrame {
 			tfPrice.setText("");
 		}	
 	}
+
+	public String getCellValue() {;
+		int selectedRow = table.getSelectedRow();
+        int selectedColumn = table.getSelectedColumn();
+        return (String) (table.getValueAt(selectedRow, selectedColumn));
+	}
 	
-	private void bUpdateActionPerformed(ActionEvent evt) {
-		if (cardSelected == 1) {
+	public void updateFromTable(int selectedRow) {
+		HashMap<String, String> args = new HashMap<String, String>();
+		if (table.getColumnCount() == 6) {
+			args.put("customerName", (String) table.getValueAt(selectedRow, 0));
+			args.put("id", (String) table.getValueAt(selectedRow, 1));
+			args.put("gender", (String) table.getValueAt(selectedRow, 2));
+			args.put("age", (String) table.getValueAt(selectedRow, 3));
+			args.put("birthDate", (String) table.getValueAt(selectedRow, 4));
+			args.put("playLevel", (String) table.getValueAt(selectedRow, 5));
 			CustomerController controller = new CustomerController(new Customer(), this);
-			controller.update(getCustomerInfo());
+			controller.update(args);
 		}
-		else if (cardSelected == 2) {
+		else if (table.getColumnCount() == 5) {
+			args.put("title", (String) table.getValueAt(selectedRow, 0));
+			args.put("id", (String) table.getValueAt(selectedRow, 1));
+			args.put("company", (String) table.getValueAt(selectedRow, 2));
+			args.put("console", (String) table.getValueAt(selectedRow, 3));
+			args.put("price", (String) table.getValueAt(selectedRow, 4));
 			GameController controller = new GameController(new Game(), this);
-			controller.update(getGameInfo());
+			controller.update(args);
 		}	
 	}
 	
-	private void bDeleteActionPerformed(ActionEvent evt) {
-		if (cardSelected == 1) {
+	public void deleteFromTable(int selectedRow) {
+		HashMap<String, String> args = new HashMap<String, String>();
+		if (table.getColumnCount() == 6) {
+			args.put("id", (String) table.getValueAt(selectedRow, 1));
 			CustomerController controller = new CustomerController(new Customer(), this);
-			controller.destroy(getCustomerInfo());
+			controller.destroy(args);
 		}
-		else if (cardSelected == 2) {
+		else if (table.getColumnCount() == 5) {
+			args.put("id", (String) table.getValueAt(selectedRow, 1));
 			GameController controller = new GameController(new Game(), this);
-			controller.destroy(getGameInfo());
+			controller.destroy(args);
 		}	
 	}
 	
