@@ -11,6 +11,7 @@ import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
@@ -69,7 +70,7 @@ public class VideoGameView extends javax.swing.JFrame {
 	private JButton bDelete;
 	private JButton bPurchases;
 	private JButton bNewPurchase;
-	private JButton bRecent;
+	private JButton bAllPurchases;
 	private int cardSelected = 1;
 	public String[] customerColumns = {"Name","Id #", "Gender","Age", "Birth Date","Play Level"};
 	public String[] gameColumns = {"Title","Id #", "Company","Console", "Price"};
@@ -300,9 +301,19 @@ public class VideoGameView extends javax.swing.JFrame {
 						
 						bNewPurchase = new JButton("New Purchase");
 						pTool.add(bNewPurchase);
+						bNewPurchase.addActionListener(new ActionListener() {
+							public void actionPerformed(ActionEvent evt) {
+								newPurchase();
+							}
+						});
 						
-						bRecent = new JButton("All Purchases");
-						pTool.add(bRecent);
+						bAllPurchases = new JButton("All Purchases");
+						pTool.add(bAllPurchases);
+						bAllPurchases.addActionListener(new ActionListener() {
+							public void actionPerformed(ActionEvent evt) {
+								allPurchases();
+							}
+						});
 						
 					int numRows = 0;
 					DefaultTableModel tableModel = new DefaultTableModel(numRows, customerColumns.length) ;
@@ -432,11 +443,40 @@ public class VideoGameView extends javax.swing.JFrame {
 		String key;
 		if (!id.contains("-")) {
 			key = "customerId";
+			args.put("gameId", "");
 		}
 		else {
 			key = "gameId";
+			args.put("customerId", "");
 		}
 		args.put(key, id);
+		controller.read(args);
+	}
+	
+	private void newPurchase() {
+		JTextField tfCustomerId = new JTextField();
+		JTextField tfGameId = new JTextField();
+		JTextField tfPurchaseDate = new JTextField();
+		Object[] message = {"Customer Id:", tfCustomerId, 
+				"Game Id:", tfGameId, "Purchase Date:", tfPurchaseDate};
+		int button = JOptionPane.showConfirmDialog(this, message, 
+				"New Purchase", JOptionPane.OK_CANCEL_OPTION);
+		if (button == 0) {
+			HashMap<String, String> args = new HashMap<String, String>();
+			args.put("customerId", tfCustomerId.getText());
+			args.put("gameId", tfGameId.getText());
+			args.put("purchaseDate", tfPurchaseDate.getText());
+			args.put("rating", "0.0");
+			PurchaseController controller = new PurchaseController(new Purchase(), this);
+			controller.create(args);
+		}
+	}
+	
+	private void allPurchases() {
+		PurchaseController controller = new PurchaseController(new Purchase(), this);
+		HashMap<String, String> args = new HashMap<String, String>();
+		args.put("customerId", "");
+		args.put("gameId", "");
 		controller.read(args);
 	}
 	

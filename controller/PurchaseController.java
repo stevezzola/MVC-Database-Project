@@ -19,8 +19,23 @@ public class PurchaseController {
 		this.view = view;
 	}
 	
+	public void create(HashMap<String, String> args) {
+		model = new Purchase(args);
+		model.save();
+		ArrayList<Purchase> purchases = new ArrayList<Purchase>();
+		purchases.add(model);
+		updateView(purchases);
+		System.out.println("New Purchase Saved!");
+	}
+	
 	public void read(HashMap<String, String> args) {
-		ArrayList<Purchase> purchases = Purchase.where(args);
+		ArrayList<Purchase> purchases;
+		if (args.get("customerId").equals("") && args.get("gameId").equals("")) {
+			purchases = Purchase.selectAll();
+		}
+		else {
+			purchases = Purchase.where(args);
+		}
 		updateView(purchases);
 	}
 

@@ -5,7 +5,6 @@ import java.util.HashMap;
 
 import javax.swing.table.DefaultTableModel;
 
-import model.Customer;
 import model.Game;
 import view.VideoGameView;
 

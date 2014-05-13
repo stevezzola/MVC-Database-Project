@@ -46,7 +46,7 @@ public class Purchase {
 	public static Purchase find(String customerId, String gameId) {
 		HashMap<String, String> params = new HashMap<String, String>();
 		try {
-			String sql = "SELECT * FROM Game WHERE customerId = '"
+			String sql = "SELECT * FROM Purchase WHERE customerId = '"
 					+ customerId + "'" + " AND " + "gameId = '" + gameId + "'";
 			ResultSet rs = VideoGameDemo.stmt.executeQuery(sql);
 			if (rs.next()) {
@@ -59,6 +59,24 @@ public class Purchase {
 			}
 		} catch (SQLException e) { e.printStackTrace(); }
 		return new Purchase(params);
+	}
+	
+	public static ArrayList<Purchase> selectAll() {
+		ArrayList<Purchase> list = new ArrayList<Purchase>();
+		String sql = "SELECT * FROM Purchase";
+		try {
+			System.out.println("Executing query: " + sql);
+			ResultSet rs = VideoGameDemo.stmt.executeQuery(sql);
+			HashMap<String, String> params = new HashMap<String, String>();
+			while (rs.next()) {
+				params.put("customerId", rs.getString("customerId"));
+				params.put("gameId", rs.getString("gameId"));
+				params.put("purchaseDate", rs.getString("purchaseDate"));
+				params.put("rating", rs.getString("rating"));
+				list.add(new Purchase(params));
+			}
+		} catch (SQLException e) { e.printStackTrace(); }
+		return list;
 	}
 	
 	public static ArrayList<Purchase> where(HashMap<String, String> args) {
@@ -91,7 +109,7 @@ public class Purchase {
 	public boolean save() {
 		if (this.isNewRecord()) {
 			String sql = "INSERT INTO Purchase (customerId, gameId, purchaseDate, rating) " + 
-					"VALUES ('" + customerId + "', " + "'" + gameId + "', " + "'" + purchaseDate + "', " +
+					"VALUES ('" + customerId + "', " + "'" + gameId + "', " + "'" + purchaseDate + "', '" +
 					rating + "')";
 			System.out.println("Executing query: " + sql);
 			try { VideoGameDemo.stmt.executeUpdate(sql); }
@@ -120,7 +138,7 @@ public class Purchase {
 	
 	public boolean delete() {
 		if (!isNewRecord()) {
-			String sql = "DELETE FROM Game WHERE customerId = '"
+			String sql = "DELETE FROM Purchase WHERE customerId = '"
 					+ customerId + "'" + " AND " + "gameId = '" + gameId + "'";
 			System.out.println("Executing query: " + sql);
 			try { VideoGameDemo.stmt.executeUpdate(sql); }
