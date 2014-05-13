@@ -19,7 +19,7 @@ public class PurchaseController {
 		this.view = view;
 	}
 	
-	public void create(HashMap<String, String> args) {
+	public void create(HashMap<String, String> args) { //Sends arguments from View to Model for creation in database
 		model = new Purchase(args);
 		model.save();
 		ArrayList<Purchase> purchases = new ArrayList<Purchase>();
@@ -28,7 +28,7 @@ public class PurchaseController {
 		System.out.println("New Purchase Saved!");
 	}
 	
-	public void read(HashMap<String, String> args) {
+	public void read(HashMap<String, String> args) { //Reads data from Model, requested by View (uses all arguments)
 		ArrayList<Purchase> purchases;
 		if (args.get("customerId").equals("") && args.get("gameId").equals("")) {
 			purchases = Purchase.selectAll();
@@ -39,7 +39,7 @@ public class PurchaseController {
 		updateView(purchases);
 	}
 	
-	public void update(HashMap<String, String> args) {
+	public void update(HashMap<String, String> args) { //Updates data in Model with new info retrieved from GUI
 		HashMap<String, String> keys = new HashMap<String, String>();
 		keys.put("customerId", args.get("customerId"));
 		keys.put("gameId", args.get("gameId"));
@@ -54,7 +54,7 @@ public class PurchaseController {
 		System.out.println("Game Updated!");
 	}
 	
-	public void destroy(HashMap<String, String> args) {
+	public void destroy(HashMap<String, String> args) { //deletes data in Model based on which JTable row is selected 
 		ArrayList<Purchase> purchases; 
 		purchases = Purchase.where(args);
 		for (int i = 0; i < purchases.size(); i++) {
@@ -65,6 +65,8 @@ public class PurchaseController {
 		System.out.println("Purchase Deleted!");
 	}
 
+	//Getters and Setters
+	
 	public String getCustomerId() {
 		return model.getCustomerId();
 	}

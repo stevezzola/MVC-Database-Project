@@ -19,7 +19,7 @@ public class Purchase {
 	public Purchase () {
 	}
 	
-	public Purchase(HashMap<String, String> params) {
+	public Purchase(HashMap<String, String> params) { //Purchase constructor, initializes variables
 		customerId = params.get("customerId");
 		gameId = params.get("gameId");
 		purchaseDate = params.get("purchaseDate");
@@ -27,7 +27,7 @@ public class Purchase {
 		catch (NumberFormatException e) {}
 	}
 
-	public static void createTable() {
+	public static void createTable() { //Creates table if it does not exist
 		String sql = "CREATE TABLE IF NOT EXISTS Purchase " +
 				"(customerId char(8), " +
 				"gameId char(10) not null, " +
@@ -43,7 +43,7 @@ public class Purchase {
 		} catch (SQLException e) { e.printStackTrace(); }
 	}
 	
-	public static Purchase find(String customerId, String gameId) {
+	public static Purchase find(String customerId, String gameId) { //finds Purchases in database with specified customer and game ids
 		HashMap<String, String> params = new HashMap<String, String>();
 		try {
 			String sql = "SELECT * FROM Purchase WHERE customerId = '"
@@ -61,7 +61,7 @@ public class Purchase {
 		return new Purchase(params);
 	}
 	
-	public static ArrayList<Purchase> selectAll() {
+	public static ArrayList<Purchase> selectAll() { //returns ALL Purchases in database
 		ArrayList<Purchase> list = new ArrayList<Purchase>();
 		String sql = "SELECT * FROM Purchase";
 		try {
@@ -79,7 +79,7 @@ public class Purchase {
 		return list;
 	}
 	
-	public static ArrayList<Purchase> where(HashMap<String, String> args) {
+	public static ArrayList<Purchase> where(HashMap<String, String> args) { //finds all Purchases that match specified parameters
 		ArrayList<Purchase> list = new ArrayList<Purchase>();
 		if (args.isEmpty()) return list;
 		String sql = "SELECT * FROM Purchase WHERE ";
@@ -87,7 +87,7 @@ public class Purchase {
 		while (it.hasNext()) {
 			Map.Entry<String, String> pair = (Map.Entry<String, String>) it.next();
 			if (pair.getValue() == null || pair.getValue().isEmpty()) continue;
-			sql += ("Purchase." + pair.getKey() + " = '" + pair.getValue() + "' AND ");
+			sql += ("Purchase." + pair.getKey() + " = '" + pair.getValue() + "' AND ");//Allows for inexact values
 		}
 		int index = sql.lastIndexOf(" AND ");
 		if (index != -1) sql = sql.substring(0, index);
@@ -106,7 +106,7 @@ public class Purchase {
 		return list;
 	}
 	
-	public boolean save() {
+	public boolean save() { //checks if record is new: saves if true, updates if false
 		if (this.isNewRecord()) {
 			String sql = "INSERT INTO Purchase (customerId, gameId, purchaseDate, rating) " + 
 					"VALUES ('" + customerId + "', " + "'" + gameId + "', " + "'" + purchaseDate + "', '" +
@@ -136,7 +136,7 @@ public class Purchase {
 		}
 	}
 	
-	public boolean delete() {
+	public boolean delete() { //deletes Purchases with specified customer and game ids
 		if (!isNewRecord()) {
 			String sql = "DELETE FROM Purchase WHERE customerId = '"
 					+ customerId + "'" + " AND " + "gameId = '" + gameId + "'";
@@ -150,9 +150,12 @@ public class Purchase {
 		return true;
 	}
 	
-	private boolean isNewRecord() {
+	private boolean isNewRecord() { //looks for a specific record in database. returns true if found, false if not
 		return find(customerId, gameId) == null;
 	}
+	
+	
+	//Getters and Setters
 
 	public String getCustomerId() {
 		return customerId;

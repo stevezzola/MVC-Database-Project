@@ -18,7 +18,7 @@ public class GameController {
 		this.view = view;
 	}
 	
-	public void create(HashMap<String, String> args) {
+	public void create(HashMap<String, String> args) { //Sends arguments from View to Model for creation in database
 		model = new Game(args);
 		model.save();
 		ArrayList<Game> games = new ArrayList<Game>();
@@ -27,14 +27,14 @@ public class GameController {
 		System.out.println("New Game Saved!");
 	}
 	
-	public void read(String customerId) {
+	public void read(String customerId) { //Reads data from Model, requested by View (uses id only)
 		model = Game.find(customerId);
 		ArrayList<Game> games = new ArrayList<Game>();
 		games.add(model);
 		updateView(games);
 	}
 	
-	public void read(HashMap<String, String> args) {
+	public void read(HashMap<String, String> args) { //Reads data from Model, requested by View (uses all arguments)
 		ArrayList<Game> games;
 		if (args.get("title").equals("") && args.get("id").equals("") 
 				&& args.get("company").equals("") && args.get("console").equals("") 
@@ -47,7 +47,7 @@ public class GameController {
 		updateView(games);
 	}
 	
-	public void update(HashMap<String, String> args) {
+	public void update(HashMap<String, String> args) { //Updates data in Model with new info retrieved from GUI
 		model = Game.find(args.get("id"));
 		setTitle(args.get("title"));
 		setCompany(args.get("company"));
@@ -59,7 +59,7 @@ public class GameController {
 		System.out.println("Game Updated!");
 	}
 	
-	public void destroy(HashMap<String, String> args) {
+	public void destroy(HashMap<String, String> args) { //deletes data in Model based on which JTable row is selected 
 		model = Game.find(args.get("id"));
 		model.delete();
 		ArrayList<Game> games = new ArrayList<Game>();
@@ -67,6 +67,8 @@ public class GameController {
 		System.out.println("Game Deleted!");
 	}
 
+	//Getters and Setters
+	
 	public String getTitle() {
 		return model.getTitle();
 	}

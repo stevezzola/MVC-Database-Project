@@ -26,7 +26,7 @@ public class Customer {
 	public Customer() {
 	}
 	
-	public Customer (HashMap<String, String> params) {
+	public Customer (HashMap<String, String> params) { //Customer constructor, initializes variables
 		customerName = params.get("customerName");
 		id = params.get("id");
 		gender = params.get("gender");
@@ -36,7 +36,7 @@ public class Customer {
 		playLevel = params.get("playLevel");
 	}
 
-	public static void createTable() {
+	public static void createTable() { //Creates table if it does not exist
 		String sql = "CREATE TABLE IF NOT EXISTS Customer " +
 				"(customerName varChar(50), " +
 				"id char(8) not null, " +
@@ -52,7 +52,7 @@ public class Customer {
 		} catch (SQLException e) { e.printStackTrace(); }
 	}
 	
-	public static Customer find(String id) {
+	public static Customer find(String id) { //finds Customer in database with specified id
 		HashMap<String, String> params = new HashMap<String, String>();
 		try {
 			String sql = "SELECT * FROM Customer WHERE id = '" + id + "'";
@@ -72,7 +72,7 @@ public class Customer {
 		return new Customer(params);
 	}
 	
-	public static ArrayList<Customer> where(HashMap<String, String> args) {
+	public static ArrayList<Customer> where(HashMap<String, String> args) { //finds all Customers that match specified parameters
 		ArrayList<Customer> list = new ArrayList<Customer>();
 		if (args.isEmpty()) return list;
 		String sql = "SELECT * FROM Customer WHERE ";
@@ -81,7 +81,7 @@ public class Customer {
 			Map.Entry<String, String> pair = (Map.Entry<String, String>) it.next();
 			if (pair.getValue() == null || pair.getValue().isEmpty()) continue;
 			if (Fuzzy.words.contains(pair.getKey()))
-				sql += ("LOWER(Customer." + pair.getKey() + ") LIKE LOWER('%" + pair.getValue() + "%') AND ");
+				sql += ("LOWER(Customer." + pair.getKey() + ") LIKE LOWER('%" + pair.getValue() + "%') AND "); //Allows for inexact values
 			else
 				sql += ("Customer." + pair.getKey() + " = '" + pair.getValue() + "' AND ");
 			
@@ -106,7 +106,7 @@ public class Customer {
 		return list;
 	}
 	
-	public static ArrayList<Customer> selectAll() {
+	public static ArrayList<Customer> selectAll() {  //returns ALL Customers in database
 		ArrayList<Customer> list = new ArrayList<Customer>();
 		String sql = "SELECT * FROM Customer";
 		try {
@@ -126,7 +126,7 @@ public class Customer {
 		return list;
 	}
 	
-	public boolean save() {
+	public boolean save() { //checks if record is new: saves if true, updates if false
 		if (this.isNewRecord()) {
 			String sql = "INSERT INTO Customer (customerName, id, gender, age, birthDate, playLevel) " + 
 					"VALUES ('" + customerName + "', " + "'" + id + "', " + "'" + gender + "', " +
@@ -157,7 +157,7 @@ public class Customer {
 		}
 	}
 	
-	public boolean delete() {
+	public boolean delete() { //deletes Customer with specified id
 		if (!isNewRecord()) {
 			String sql = "DELETE FROM Customer WHERE id = '" + id + "'";
 			System.out.println("Executing query: " + sql);
@@ -170,9 +170,12 @@ public class Customer {
 		return true;
 	}
 	
-	private boolean isNewRecord() {
+	private boolean isNewRecord() { //looks for a specific record in database. returns true if found, false if not
 		return find(id) == null;
 	}
+	
+	
+	//Getters and Setters
 	
 	public String getCustomerName() {
 		return customerName;

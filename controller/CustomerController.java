@@ -17,7 +17,7 @@ public class CustomerController {
 		this.view = view;
 	}
 	
-	public void create(HashMap<String, String> args) {
+	public void create(HashMap<String, String> args) { //Sends arguments from View to Model for creation in database
 		model = new Customer(args);
 		model.save();
 		ArrayList<Customer> customers = new ArrayList<Customer>();
@@ -26,14 +26,14 @@ public class CustomerController {
 		System.out.println("New Customer Saved!");
 	}
 	
-	public void read(String customerId) {
+	public void read(String customerId) { //Reads data from Model, requested by View (uses id only)
 		model = Customer.find(customerId);
 		ArrayList<Customer> customers = new ArrayList<Customer>();
 		customers.add(model);
 		updateView(customers);
 	}
 	
-	public void read(HashMap<String, String> args) {
+	public void read(HashMap<String, String> args) { //Reads data from Model, requested by View (uses all arguments)
 		ArrayList<Customer> customers;
 		if (args.get("customerName").equals("") && args.get("id").equals("") 
 				&& args.get("gender").equals("") && args.get("age").equals("") 
@@ -46,7 +46,7 @@ public class CustomerController {
 		updateView(customers);
 	}
 	
-	public void update(HashMap<String, String> args) {
+	public void update(HashMap<String, String> args) { //Updates data in Model with new info retrieved from GUI
 		model = Customer.find(args.get("id"));
 		setCustomerName(args.get("customerName"));
 		setGender(args.get("gender"));
@@ -59,13 +59,15 @@ public class CustomerController {
 		System.out.println("Customer Updated!");
 	}
 	
-	public void destroy(HashMap<String, String> args) {
+	public void destroy(HashMap<String, String> args) { //deletes data in Model based on which JTable row is selected 
 		model = Customer.find(args.get("id"));
 		model.delete();
 		ArrayList<Customer> customers = new ArrayList<Customer>();
 		customers.add(model);;
 		System.out.println("Customer Deleted!");
 	}
+	
+	//Getters and Setters
 	
 	public String getCustomerName() {
 		return model.getCustomerName();

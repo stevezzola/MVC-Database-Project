@@ -25,7 +25,7 @@ public class Game {
 	public Game() {
 	}
 	
-	public Game(HashMap<String, String> params) {
+	public Game(HashMap<String, String> params) { //Game constructor, initializes variables
 		title = params.get("title");
 		id = params.get("id");
 		company = params.get("company");
@@ -33,7 +33,7 @@ public class Game {
 		price = params.get("price");
 	}
 
-	public static void createTable() {
+	public static void createTable() { //Creates table if it does not exist
 		String sql = "CREATE TABLE IF NOT EXISTS Game " +
 				"(title varChar(50), " +
 				"id char(10) not null, " +
@@ -48,7 +48,7 @@ public class Game {
 		} catch (SQLException e) { e.printStackTrace(); }
 	}
 	
-	public static Game find(String id) {
+	public static Game find(String id) { //finds Game in database with specified id
 		HashMap<String, String> params = new HashMap<String, String>();
 		try {
 			String sql = "SELECT * FROM Game WHERE id = '" + id + "'";
@@ -67,7 +67,7 @@ public class Game {
 		return new Game(params);
 	}
 	
-	public static ArrayList<Game> selectAll() {
+	public static ArrayList<Game> selectAll() { //returns ALL Games in database
 		ArrayList<Game> list = new ArrayList<Game>();
 		String sql = "SELECT * FROM Game";
 		try {
@@ -86,7 +86,7 @@ public class Game {
 		return list;
 	}
 	
-	public static ArrayList<Game> where(HashMap<String, String> args) {
+	public static ArrayList<Game> where(HashMap<String, String> args) { //finds all Games that match specified parameters
 		ArrayList<Game> list = new ArrayList<Game>();
 		if (args.isEmpty()) return list;
 		String sql = "SELECT * FROM Game WHERE ";
@@ -96,7 +96,7 @@ public class Game {
 			Map.Entry<String, String> pair = (Map.Entry<String, String>) it.next();
 			if (pair.getValue() == null || pair.getValue().isEmpty()) continue;
 			if (Fuzzy.words.contains(pair.getKey()))
-				sql += ("LOWER(Game." + pair.getKey() + ") LIKE LOWER('%" + pair.getValue() + "%') AND ");
+				sql += ("LOWER(Game." + pair.getKey() + ") LIKE LOWER('%" + pair.getValue() + "%') AND ");//Allows for inexact values
 			else
 				sql += ("Game." + pair.getKey() + " = '" + pair.getValue() + "' AND ");
 		}
@@ -118,7 +118,7 @@ public class Game {
 		return list;
 	}
 	
-	public boolean save() {
+	public boolean save() { //checks if record is new: saves if true, updates if false
 		if (this.isNewRecord()) {
 			String sql = "INSERT INTO Game (title, id, company, console, price) " + 
 					"VALUES ('" + title + "', " + "'" + id + "', " + "'" + company + "', '" +
@@ -148,7 +148,7 @@ public class Game {
 		}
 	}
 	
-	public boolean delete() {
+	public boolean delete() { //deletes Game with specified id
 		if (!isNewRecord()) {
 			String sql = "DELETE FROM Game WHERE id = '" + id + "'";
 			System.out.println("Executing query: " + sql);
@@ -161,9 +161,12 @@ public class Game {
 		return true;
 	}
 	
-	private boolean isNewRecord() {
+	private boolean isNewRecord() { //looks for a specific record in database. returns true if found, false if not
 		return find(id) == null;
 	}
+	
+	
+	//Getters and Setters
 	
 	public String getTitle() {
 		return title;

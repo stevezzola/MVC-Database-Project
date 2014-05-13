@@ -81,17 +81,17 @@ public class VideoGameView extends javax.swing.JFrame {
 		initGUI();
 	}
 
-	private void initGUI() {
+	private void initGUI() { //Method that creates GUI on startup
 		try {
 			BorderLayout thisLayout = new BorderLayout();
 			getContentPane().setLayout(thisLayout);
 
-				pMain = new JPanel();
+				pMain = new JPanel(); //Main panel
 				BorderLayout pMainLayout = new BorderLayout();
 				pMain.setLayout(pMainLayout);
 				getContentPane().add(pMain, BorderLayout.CENTER);
 				
-					pSearch = new JPanel();
+					pSearch = new JPanel(); //Search panel -- contains radio buttons, form cards, and form buttons
 					getContentPane().add(pSearch, BorderLayout.WEST);
 					pSearch.setLayout(new BorderLayout());
 					pSearch.setPreferredSize(new java.awt.Dimension(210, 330));
@@ -175,7 +175,7 @@ public class VideoGameView extends javax.swing.JFrame {
 								tfPrice = new JTextField();
 								pGame.add(tfPrice, gbc);
 							
-							pCards = new JPanel(new CardLayout());
+							pCards = new JPanel(new CardLayout()); //CardLayout to switch between forms based on selected radio button
 							pCards.add(pCustomer, "Customer");
 							pCards.add(pGame, "Game");
 							pSearch.add(pCards, BorderLayout.CENTER);
@@ -208,7 +208,7 @@ public class VideoGameView extends javax.swing.JFrame {
 							rbCustomer.addActionListener(radioListener1);
 							rbGame.addActionListener(radioListener2);
 							
-						pButtons = new JPanel();
+						pButtons = new JPanel(); //buttons that interact with form
 						pSearch.add(pButtons, BorderLayout.SOUTH);
 						Insets buttonInsets = new Insets (5, 5, 5, 5);
 							
@@ -239,7 +239,7 @@ public class VideoGameView extends javax.swing.JFrame {
 								}
 							});
 
-					pBar = new JPanel();
+					pBar = new JPanel(); //quick search bar
 					pBar.setBackground(Color.LIGHT_GRAY);
 					pMain.add(pBar, BorderLayout.NORTH);
 
@@ -261,7 +261,7 @@ public class VideoGameView extends javax.swing.JFrame {
 							}
 						});
 						
-					pTool = new JPanel();
+					pTool = new JPanel(); //tool bar on botton with various buttons that interact with JTable
 					pTool.setBackground(Color.LIGHT_GRAY);
 					pMain.add(pTool, BorderLayout.SOUTH);
 						
@@ -315,7 +315,7 @@ public class VideoGameView extends javax.swing.JFrame {
 							}
 						});
 						
-					int numRows = 0;
+					int numRows = 0; //creating the components of the JTable
 					DefaultTableModel tableModel = new DefaultTableModel(numRows, customerColumns.length) ;
 					tableModel.setColumnIdentifiers(customerColumns);
 					table = new JTable(tableModel);
@@ -336,7 +336,7 @@ public class VideoGameView extends javax.swing.JFrame {
 		}
 	}
 	
-	private void bQuickActionPerformed(ActionEvent evt) {
+	private void bQuickActionPerformed(ActionEvent evt) { //when Quick Search is used
 		String input = jTextField1.getText();
 		if (!input.contains("-")) {
 			//Send input to Customer Controller
@@ -350,7 +350,7 @@ public class VideoGameView extends javax.swing.JFrame {
 		}
 	}
 	
-	private void bSearchActionPerformed(ActionEvent evt) {
+	private void bSearchActionPerformed(ActionEvent evt) { //when Advanced search is used
 		if (cardSelected == 1) {
 			CustomerController controller = new CustomerController(new Customer(), this);
 			controller.read(getCustomerInfo());
@@ -361,7 +361,7 @@ public class VideoGameView extends javax.swing.JFrame {
 		}	
 	}
 	
-	private void bAddNewActionPerformed(ActionEvent evt) {
+	private void bAddNewActionPerformed(ActionEvent evt) { //when user adds new data
 		if (cardSelected == 1) {
 			CustomerController controller = new CustomerController(new Customer(), this);
 			controller.create(getCustomerInfo());
@@ -372,7 +372,7 @@ public class VideoGameView extends javax.swing.JFrame {
 		}	
 	}
 	
-	private void bClearActionPerformed(ActionEvent evt) {
+	private void bClearActionPerformed(ActionEvent evt) { //to quickly clear forms
 		if (cardSelected == 1) {
 			tfName.setText("");
 			tfCId.setText("");
@@ -390,16 +390,16 @@ public class VideoGameView extends javax.swing.JFrame {
 		}	
 	}
 
-	public String getCellValue() {;
+	public String getCellValue() { //returns value of currently selected Cell
 		int selectedRow = table.getSelectedRow();
         int selectedColumn = table.getSelectedColumn();
         return (String) (table.getValueAt(selectedRow, selectedColumn));
 	}
 	
-	public String getCellValue(int row, int column) {;
+	public String getCellValue(int row, int column) {; //returns value of Cell at requested row and column
 		return (String) (table.getValueAt(row, column));
 	}
-	public void updateFromTable(int selectedRow) {
+	public void updateFromTable(int selectedRow) { //sends info to controller based on user input in JTable
 		try {
 			HashMap<String, String> args = new HashMap<String, String>();
 			if (table.getColumnCount() == 6) {
@@ -432,7 +432,7 @@ public class VideoGameView extends javax.swing.JFrame {
 		} catch (Exception e) {}
 	}
 	
-	public void deleteFromTable(int selectedRow) {
+	public void deleteFromTable(int selectedRow) { //tells controller to delete info in database based on the row selected in JTable
 		try {
 			HashMap<String, String> args = new HashMap<String, String>();
 			DefaultTableModel tableModel = (DefaultTableModel) table.getModel();
@@ -464,7 +464,7 @@ public class VideoGameView extends javax.swing.JFrame {
 		} catch (Exception e) {}
 	}
 	
-	private void displayPurchases() {
+	private void displayPurchases() { //displays purchases of selected Customer or Game
 		try {
 			String id = getCellValue(table.getSelectedRow(), 1);
 			PurchaseController controller = new PurchaseController(new Purchase(), this);
@@ -483,7 +483,7 @@ public class VideoGameView extends javax.swing.JFrame {
 		} catch (Exception e) {}
 	}
 	
-	private void newPurchase() {
+	private void newPurchase() { //prompts user to add new purchase information
 		JTextField tfCustomerId = new JTextField();
 		JTextField tfGameId = new JTextField();
 		JTextField tfPurchaseDate = new JTextField();
@@ -502,7 +502,7 @@ public class VideoGameView extends javax.swing.JFrame {
 		}
 	}
 	
-	private void allPurchases() {
+	private void allPurchases() { //displays all purchases recorded in database
 		PurchaseController controller = new PurchaseController(new Purchase(), this);
 		HashMap<String, String> args = new HashMap<String, String>();
 		args.put("customerId", "");
@@ -510,7 +510,7 @@ public class VideoGameView extends javax.swing.JFrame {
 		controller.read(args);
 	}
 	
-	private void changeForm(int index) {
+	private void changeForm(int index) { //changes form card based on radio button input
 		CardLayout cl = (CardLayout)(pCards.getLayout());
 	   	if (index == 1) {
 	   		cl.show(pCards, "Customer");
@@ -522,7 +522,7 @@ public class VideoGameView extends javax.swing.JFrame {
 		}
 	}
 	
-	private HashMap<String, String> getCustomerInfo() {
+	private HashMap<String, String> getCustomerInfo() { //retrieves info from Customer text fields and creates a HashMap
 		HashMap<String, String> args = new HashMap<String, String>();
 		args.put("customerName", tfName.getText());
 		args.put("id", tfCId.getText());
@@ -533,7 +533,7 @@ public class VideoGameView extends javax.swing.JFrame {
 		return args;
 	}
 	
-	private HashMap<String, String> getGameInfo() {
+	private HashMap<String, String> getGameInfo() { //retrieves info from Game text fields and creates a HashMap
 		HashMap<String, String> args = new HashMap<String, String>();
 		args.put("title", tfTitle.getText());
 		args.put("id", tfGId.getText());
