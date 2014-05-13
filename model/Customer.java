@@ -72,14 +72,6 @@ public class Customer {
 		return new Customer(params);
 	}
 	
-	public static ArrayList<Customer> where(String[][] args) {
-		HashMap<String, String> hArgs = new HashMap<String, String>();
-		for (String[] row : args) {
-			hArgs.put(row[0], row[1]);
-		}
-		return where(hArgs);
-	}
-	
 	public static ArrayList<Customer> where(HashMap<String, String> args) {
 		ArrayList<Customer> list = new ArrayList<Customer>();
 		if (args.isEmpty()) return list;
@@ -97,6 +89,26 @@ public class Customer {
 		int index = sql.lastIndexOf(" AND ");
 		if (index != -1) sql = sql.substring(0, index);
 		else return list;
+		try {
+			System.out.println("Executing query: " + sql);
+			ResultSet rs = VideoGameDemo.stmt.executeQuery(sql);
+			HashMap<String, String> params = new HashMap<String, String>();
+			while (rs.next()) {
+				params.put("customerName", rs.getString("customerName"));
+				params.put("id", rs.getString("id"));
+				params.put("gender", rs.getString("gender"));
+				params.put("age", String.valueOf(rs.getInt("age")));
+				params.put("birthDate", rs.getString("birthDate"));
+				params.put("playLevel", rs.getString("playLevel"));
+				list.add(new Customer(params));
+			}
+		} catch (SQLException e) { e.printStackTrace(); }
+		return list;
+	}
+	
+	public static ArrayList<Customer> selectAll() {
+		ArrayList<Customer> list = new ArrayList<Customer>();
+		String sql = "SELECT * FROM Customer";
 		try {
 			System.out.println("Executing query: " + sql);
 			ResultSet rs = VideoGameDemo.stmt.executeQuery(sql);

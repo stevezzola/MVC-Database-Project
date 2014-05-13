@@ -39,7 +39,7 @@ public class Game {
 				"id char(10) not null, " +
 				"company varChar(50), " +
 				"console varChar(10), " +
-				"price decimal(5,2), " +
+				"price varChar(8), " +
 				"primary key (id)" +
 				")";
 		try {
@@ -67,12 +67,23 @@ public class Game {
 		return new Game(params);
 	}
 	
-	public static ArrayList<Game> where(String[][] args) {
-		HashMap<String, String> hArgs = new HashMap<String, String>();
-		for (String[] row : args) {
-			hArgs.put(row[0], row[1]);
-		}
-		return where(hArgs);
+	public static ArrayList<Game> selectAll() {
+		ArrayList<Game> list = new ArrayList<Game>();
+		String sql = "SELECT * FROM Game";
+		try {
+			System.out.println("Executing query: " + sql);
+			ResultSet rs = VideoGameDemo.stmt.executeQuery(sql);
+			HashMap<String, String> params = new HashMap<String, String>();
+			while (rs.next()) {
+				params.put("title", rs.getString("title"));
+				params.put("id", rs.getString("id"));
+				params.put("company", rs.getString("company"));
+				params.put("console", rs.getString("console"));
+				params.put("price", rs.getString("price"));
+				list.add(new Game(params));
+			}
+		} catch (SQLException e) { e.printStackTrace(); }
+		return list;
 	}
 	
 	public static ArrayList<Game> where(HashMap<String, String> args) {

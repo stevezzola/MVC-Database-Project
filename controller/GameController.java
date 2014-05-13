@@ -5,6 +5,7 @@ import java.util.HashMap;
 
 import javax.swing.table.DefaultTableModel;
 
+import model.Customer;
 import model.Game;
 import view.VideoGameView;
 
@@ -35,7 +36,15 @@ public class GameController {
 	}
 	
 	public void read(HashMap<String, String> args) {
-		ArrayList<Game> games = Game.where(args);
+		ArrayList<Game> games;
+		if (args.get("title").equals("") && args.get("id").equals("") 
+				&& args.get("company").equals("") && args.get("console").equals("") 
+				&& args.get("price").equals("")) {
+			games = Game.selectAll();
+		}
+		else {
+			games = Game.where(args);
+		}
 		updateView(games);
 	}
 	

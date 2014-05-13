@@ -23,7 +23,7 @@ public class Purchase {
 		customerId = params.get("customerId");
 		gameId = params.get("gameId");
 		purchaseDate = params.get("purchaseDate");
-		try { rating = Double.parseDouble("rating"); }
+		try { rating = Double.parseDouble(params.get("rating")); }
 		catch (NumberFormatException e) {}
 	}
 
@@ -32,7 +32,7 @@ public class Purchase {
 				"(customerId char(8), " +
 				"gameId char(10) not null, " +
 				"purchaseDate date, " +
-				"rating integer, " +
+				"rating decimal(2,1), " +
 				"primary key (customerId, gameId), " +
 				"foreign key (customerId) references Customer (id)," +
 				"foreign key (gameId) references Game (id)" +
@@ -59,14 +59,6 @@ public class Purchase {
 			}
 		} catch (SQLException e) { e.printStackTrace(); }
 		return new Purchase(params);
-	}
-	
-	public static ArrayList<Purchase> where(String[][] args) {
-		HashMap<String, String> hArgs = new HashMap<String, String>();
-		for (String[] row : args) {
-			hArgs.put(row[0], row[1]);
-		}
-		return where(hArgs);
 	}
 	
 	public static ArrayList<Purchase> where(HashMap<String, String> args) {

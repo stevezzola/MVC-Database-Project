@@ -34,7 +34,15 @@ public class CustomerController {
 	}
 	
 	public void read(HashMap<String, String> args) {
-		ArrayList<Customer> customers = Customer.where(args);
+		ArrayList<Customer> customers;
+		if (args.get("customerName").equals("") && args.get("id").equals("") 
+				&& args.get("gender").equals("") && args.get("age").equals("") 
+				&& args.get("birthDate").equals("") && args.get("playLevel").equals("")) {
+			customers = Customer.selectAll();
+		}
+		else {
+			customers = Customer.where(args);
+		}
 		updateView(customers);
 	}
 	

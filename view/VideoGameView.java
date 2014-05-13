@@ -18,16 +18,14 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.WindowConstants;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
-import javax.swing.event.TableModelEvent;
-import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
 
 import model.Customer;
 import model.Game;
+import model.Purchase;
 import controller.CustomerController;
 import controller.GameController;
+import controller.PurchaseController;
 
 import java.awt.BorderLayout;
 import java.util.HashMap;
@@ -75,6 +73,7 @@ public class VideoGameView extends javax.swing.JFrame {
 	private int cardSelected = 1;
 	public String[] customerColumns = {"Name","Id #", "Gender","Age", "Birth Date","Play Level"};
 	public String[] gameColumns = {"Title","Id #", "Company","Console", "Price"};
+	public String[] purchaseColumns = {"Customer Id","Game Id", "Purchase Date","Personal Rating"};
 	
 	public VideoGameView() { 
 		super();
@@ -293,11 +292,16 @@ public class VideoGameView extends javax.swing.JFrame {
 						
 						bPurchases = new JButton("Purchases");
 						pTool.add(bPurchases);
+						bPurchases.addActionListener(new ActionListener() {
+							public void actionPerformed(ActionEvent evt) {
+								displayPurchases();
+							}
+						});
 						
 						bNewPurchase = new JButton("New Purchase");
 						pTool.add(bNewPurchase);
 						
-						bRecent = new JButton("Recent...");
+						bRecent = new JButton("All Purchases");
 						pTool.add(bRecent);
 						
 					int numRows = 0;
@@ -381,6 +385,9 @@ public class VideoGameView extends javax.swing.JFrame {
         return (String) (table.getValueAt(selectedRow, selectedColumn));
 	}
 	
+	public String getCellValue(int row, int column) {;
+		return (String) (table.getValueAt(row, column));
+	}
 	public void updateFromTable(int selectedRow) {
 		HashMap<String, String> args = new HashMap<String, String>();
 		if (table.getColumnCount() == 6) {
@@ -416,6 +423,21 @@ public class VideoGameView extends javax.swing.JFrame {
 			GameController controller = new GameController(new Game(), this);
 			controller.destroy(args);
 		}	
+	}
+	
+	private void displayPurchases() {
+		String id = getCellValue(table.getSelectedRow(), 1);
+		PurchaseController controller = new PurchaseController(new Purchase(), this);
+		HashMap<String, String> args = new HashMap<String, String>();
+		String key;
+		if (!id.contains("-")) {
+			key = "customerId";
+		}
+		else {
+			key = "gameId";
+		}
+		args.put(key, id);
+		controller.read(args);
 	}
 	
 	private void changeForm(int index) {
