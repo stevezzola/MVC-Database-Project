@@ -64,7 +64,6 @@ public class GameController {
 		model.delete();
 		ArrayList<Game> games = new ArrayList<Game>();
 		games.add(model);
-		updateView(games);
 		System.out.println("Game Deleted!");
 	}
 

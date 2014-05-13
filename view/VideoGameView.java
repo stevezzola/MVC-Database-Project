@@ -400,57 +400,87 @@ public class VideoGameView extends javax.swing.JFrame {
 		return (String) (table.getValueAt(row, column));
 	}
 	public void updateFromTable(int selectedRow) {
-		HashMap<String, String> args = new HashMap<String, String>();
-		if (table.getColumnCount() == 6) {
-			args.put("customerName", (String) table.getValueAt(selectedRow, 0));
-			args.put("id", (String) table.getValueAt(selectedRow, 1));
-			args.put("gender", (String) table.getValueAt(selectedRow, 2));
-			args.put("age", (String) table.getValueAt(selectedRow, 3));
-			args.put("birthDate", (String) table.getValueAt(selectedRow, 4));
-			args.put("playLevel", (String) table.getValueAt(selectedRow, 5));
-			CustomerController controller = new CustomerController(new Customer(), this);
-			controller.update(args);
-		}
-		else if (table.getColumnCount() == 5) {
-			args.put("title", (String) table.getValueAt(selectedRow, 0));
-			args.put("id", (String) table.getValueAt(selectedRow, 1));
-			args.put("company", (String) table.getValueAt(selectedRow, 2));
-			args.put("console", (String) table.getValueAt(selectedRow, 3));
-			args.put("price", (String) table.getValueAt(selectedRow, 4));
-			GameController controller = new GameController(new Game(), this);
-			controller.update(args);
-		}	
+		try {
+			HashMap<String, String> args = new HashMap<String, String>();
+			if (table.getColumnCount() == 6) {
+				args.put("customerName", (String) table.getValueAt(selectedRow, 0));
+				args.put("id", (String) table.getValueAt(selectedRow, 1));
+				args.put("gender", (String) table.getValueAt(selectedRow, 2));
+				args.put("age", (String) table.getValueAt(selectedRow, 3));
+				args.put("birthDate", (String) table.getValueAt(selectedRow, 4));
+				args.put("playLevel", (String) table.getValueAt(selectedRow, 5));
+				CustomerController controller = new CustomerController(new Customer(), this);
+				controller.update(args);
+			}
+			else if (table.getColumnCount() == 5) {
+				args.put("title", (String) table.getValueAt(selectedRow, 0));
+				args.put("id", (String) table.getValueAt(selectedRow, 1));
+				args.put("company", (String) table.getValueAt(selectedRow, 2));
+				args.put("console", (String) table.getValueAt(selectedRow, 3));
+				args.put("price", (String) table.getValueAt(selectedRow, 4));
+				GameController controller = new GameController(new Game(), this);
+				controller.update(args);
+			}	
+			else if (table.getColumnCount() == 4) {
+				args.put("customerId", (String) table.getValueAt(selectedRow, 0));
+				args.put("gameId", (String) table.getValueAt(selectedRow, 1));
+				args.put("purchaseDate", (String) table.getValueAt(selectedRow, 2));
+				args.put("rating", (String) table.getValueAt(selectedRow, 3));
+				PurchaseController controller = new PurchaseController(new Purchase(), this);
+				controller.update(args);
+			}
+		} catch (Exception e) {}
 	}
 	
 	public void deleteFromTable(int selectedRow) {
-		HashMap<String, String> args = new HashMap<String, String>();
-		if (table.getColumnCount() == 6) {
-			args.put("id", (String) table.getValueAt(selectedRow, 1));
-			CustomerController controller = new CustomerController(new Customer(), this);
-			controller.destroy(args);
-		}
-		else if (table.getColumnCount() == 5) {
-			args.put("id", (String) table.getValueAt(selectedRow, 1));
-			GameController controller = new GameController(new Game(), this);
-			controller.destroy(args);
-		}	
+		try {
+			HashMap<String, String> args = new HashMap<String, String>();
+			DefaultTableModel tableModel = (DefaultTableModel) table.getModel();
+			if (table.getColumnCount() == 6) {
+				args.put("customerId", (String) table.getValueAt(selectedRow, 1));
+				PurchaseController controllerp = new PurchaseController(new Purchase(), this);
+				controllerp.destroy(args);
+				args.clear();
+				args.put("id", (String) table.getValueAt(selectedRow, 1));
+				CustomerController controller = new CustomerController(new Customer(), this);
+				controller.destroy(args);
+			}
+			else if (table.getColumnCount() == 5) {
+				args.put("gameId", (String) table.getValueAt(selectedRow, 1));
+				PurchaseController controllerp = new PurchaseController(new Purchase(), this);
+				controllerp.destroy(args);
+				args.clear();
+				args.put("id", (String) table.getValueAt(selectedRow, 1));
+				GameController controller = new GameController(new Game(), this);
+				controller.destroy(args);
+			}
+			else if (table.getColumnCount() == 4) {
+				args.put("customerId", (String) table.getValueAt(selectedRow, 0));
+				args.put("gameId", (String) table.getValueAt(selectedRow, 1));
+				PurchaseController controller = new PurchaseController(new Purchase(), this);
+				controller.destroy(args);
+			}
+			tableModel.removeRow(table.getSelectedRow());
+		} catch (Exception e) {}
 	}
 	
 	private void displayPurchases() {
-		String id = getCellValue(table.getSelectedRow(), 1);
-		PurchaseController controller = new PurchaseController(new Purchase(), this);
-		HashMap<String, String> args = new HashMap<String, String>();
-		String key;
-		if (!id.contains("-")) {
-			key = "customerId";
-			args.put("gameId", "");
-		}
-		else {
-			key = "gameId";
-			args.put("customerId", "");
-		}
-		args.put(key, id);
-		controller.read(args);
+		try {
+			String id = getCellValue(table.getSelectedRow(), 1);
+			PurchaseController controller = new PurchaseController(new Purchase(), this);
+			HashMap<String, String> args = new HashMap<String, String>();
+			String key = null;
+			if (table.getColumnCount() == 6) {
+				key = "customerId";
+				args.put("gameId", "");
+			}
+			else if (table.getColumnCount() == 5){
+				key = "gameId";
+				args.put("customerId", "");
+			}
+			args.put(key, id);
+			controller.read(args);
+		} catch (Exception e) {}
 	}
 	
 	private void newPurchase() {

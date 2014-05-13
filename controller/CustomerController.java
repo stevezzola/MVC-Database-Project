@@ -63,8 +63,7 @@ public class CustomerController {
 		model = Customer.find(args.get("id"));
 		model.delete();
 		ArrayList<Customer> customers = new ArrayList<Customer>();
-		customers.add(model);
-		updateView(customers);
+		customers.add(model);;
 		System.out.println("Customer Deleted!");
 	}
 	

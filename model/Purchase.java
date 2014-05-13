@@ -123,7 +123,7 @@ public class Purchase {
 					" customerId = '" + customerId + "', " +
 					" gameId = '" + gameId + "', " +
 					" purchaseDate = '" + purchaseDate + "', " +
-					" rating = " + rating + ", " +
+					" rating = " + rating +
 					" WHERE customerId = '" + customerId + "'" +
 					" AND gameId = '" + gameId + "'";
 			System.out.println("Executing query: " + sql);
@@ -182,7 +182,7 @@ public class Purchase {
 		return rating;
 	}
 
-	public void setRating(int rating) {
+	public void setRating(double rating) {
 		this.rating = rating;
 	}
 	

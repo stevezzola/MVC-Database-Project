@@ -38,6 +38,32 @@ public class PurchaseController {
 		}
 		updateView(purchases);
 	}
+	
+	public void update(HashMap<String, String> args) {
+		HashMap<String, String> keys = new HashMap<String, String>();
+		keys.put("customerId", args.get("customerId"));
+		keys.put("gameId", args.get("gameId"));
+		ArrayList<Purchase> purchases; 
+		purchases = Purchase.where(keys);
+		for (int i = 0; i < purchases.size(); i++) {
+			model = purchases.get(i);
+			setPurchaseDate((args.get("purchaseDate")));
+			setRating(Double.parseDouble(args.get("rating")));
+			model.save();
+		}
+		System.out.println("Game Updated!");
+	}
+	
+	public void destroy(HashMap<String, String> args) {
+		ArrayList<Purchase> purchases; 
+		purchases = Purchase.where(args);
+		for (int i = 0; i < purchases.size(); i++) {
+			model = purchases.get(i);
+			model.delete();
+		}
+		purchases = new ArrayList<Purchase>();
+		System.out.println("Purchase Deleted!");
+	}
 
 	public String getCustomerId() {
 		return model.getCustomerId();
@@ -67,7 +93,7 @@ public class PurchaseController {
 		return model.getRating();
 	}
 
-	public void setRating(int rating) {
+	public void setRating(double rating) {
 		model.setRating(rating);
 	}
 	
